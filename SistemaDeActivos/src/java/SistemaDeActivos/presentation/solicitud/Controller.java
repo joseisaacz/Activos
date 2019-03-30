@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.mail.Session;
@@ -124,8 +125,9 @@ public class Controller extends HttpServlet {
               }
                SistemaDeActivos.logic.Model.instance().agregarSolicitud(model.getSolicitud());
                bienes.clear();
-               request.setAttribute("Bienes", bienes);
-                request.getRequestDispatcher("/presentation/solicitud/list").forward( request, response); 
+               model.getBienes().clear();
+               request.getSession(true).setAttribute("Bienes", bienes);
+                request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response); 
              }
              catch(Exception e){
                  String error=null;
