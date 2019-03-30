@@ -199,13 +199,13 @@ public class Controller extends HttpServlet {
 //     }
       Bien b= new Bien();
 
-       b.setNumero(Integer.parseInt(request.getParameter("numserie")));
+
        b.setDescripcion(request.getParameter("descripcion"));
        b.setMarca(request.getParameter("marca"));
        b.setModelo(request.getParameter("modelo"));
        b.setPrecio(Float.parseFloat(request.getParameter("precio")));
        b.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
-       
+       b.setNumero(Integer.parseInt(request.getParameter("numserie")));
        return b;
 
     }
