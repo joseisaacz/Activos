@@ -54,6 +54,7 @@ public class Controller extends HttpServlet {
                   this.createSolicitud(request, response);
                 if (request.getServletPath().equals("/presentation/solicitud/delete/bien"))
                 this.deleteBien(request, response);
+                
             
     }
     protected void deleteBien(HttpServletRequest request, 
