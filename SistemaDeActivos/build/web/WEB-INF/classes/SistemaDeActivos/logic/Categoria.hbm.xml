@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26-Mar-2019 22:32:57 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="SistemaDeActivos.logic.Categoria" table="categoria" catalog="inventario" optimistic-lock="version">
+        <id name="categoria" type="int">
+            <column name="categoria" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="30" not-null="true" />
+        </property>
+        <property name="consecutivo" type="java.lang.Integer">
+            <column name="consecutivo" />
+        </property>
+        <set name="activos" table="activo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="categoria" not-null="true" />
+            </key>
+            <one-to-many class="SistemaDeActivos.logic.Activo" />
+        </set>
+    </class>
+</hibernate-mapping>

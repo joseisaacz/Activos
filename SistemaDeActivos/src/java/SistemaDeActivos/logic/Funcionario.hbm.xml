@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26-Mar-2019 22:32:57 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="SistemaDeActivos.logic.Funcionario" table="funcionario" catalog="inventario" optimistic-lock="version">
+        <id name="id" type="string">
+            <column name="id" length="10" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="dependencia" class="SistemaDeActivos.logic.Dependencia" fetch="select">
+            <column name="dependencia" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="30" />
+        </property>
+        <set name="solicituds" table="solicitud" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="registrador" length="10" />
+            </key>
+            <one-to-many class="SistemaDeActivos.logic.Solicitud" />
+        </set>
+        <set name="usuarios" table="usuario" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="funcionario" length="10" not-null="true" />
+            </key>
+            <one-to-many class="SistemaDeActivos.logic.Usuario" />
+        </set>
+        <set name="dependencias" table="dependencia" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="administrador" length="10" unique="true" />
+            </key>
+            <one-to-many class="SistemaDeActivos.logic.Dependencia" />
+        </set>
+    </class>
+</hibernate-mapping>

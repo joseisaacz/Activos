@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26-Mar-2019 22:32:57 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="SistemaDeActivos.logic.Activo" table="activo" catalog="inventario" optimistic-lock="version">
+        <id name="codigo" type="int">
+            <column name="codigo" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="bien" class="SistemaDeActivos.logic.Bien" fetch="select">
+            <column name="bien" not-null="true" />
+        </many-to-one>
+        <many-to-one name="categoria" class="SistemaDeActivos.logic.Categoria" fetch="select">
+            <column name="categoria" not-null="true" />
+        </many-to-one>
+        <property name="dependencia" type="int">
+            <column name="dependencia" not-null="true" />
+        </property>
+        <property name="funcionario" type="string">
+            <column name="funcionario" length="10" not-null="true" />
+        </property>
+        <property name="puesto" type="int">
+            <column name="puesto" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

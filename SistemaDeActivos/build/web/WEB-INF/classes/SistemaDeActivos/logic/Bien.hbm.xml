@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 26-Mar-2019 22:32:57 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="SistemaDeActivos.logic.Bien" table="bien" catalog="inventario" optimistic-lock="version">
+        <id name="numero" type="int">
+            <column name="numero" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="solicitud" class="SistemaDeActivos.logic.Solicitud" fetch="select">
+            <column name="solicitud" not-null="true" />
+        </many-to-one>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="30" />
+        </property>
+        <property name="marca" type="string">
+            <column name="marca" length="30" />
+        </property>
+        <property name="modelo" type="string">
+            <column name="modelo" length="30" />
+        </property>
+        <property name="precio" type="java.lang.Float">
+            <column name="precio" precision="12" scale="0" />
+        </property>
+        <property name="cantidad" type="java.lang.Integer">
+            <column name="cantidad" />
+        </property>
+        <set name="activos" table="activo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="bien" not-null="true" />
+            </key>
+            <one-to-many class="SistemaDeActivos.logic.Activo" />
+        </set>
+    </class>
+</hibernate-mapping>
