@@ -22,14 +22,32 @@
         <div style="margin-top: 100px">
             
              </div>
-        <div class="panel panel-info">
-     <div class="panel-heading">
-    <h3 class="panel-title">Bienvenido al Sistema Gestor de Activos</h3>
+        <div style="margin-bottom: 250px"></div>
+        <span class="border">
+            
+              <div class="container h-100 ">
+  <div class="row h-100 justify-content-center align-items-center">
+     <div class="panel panel-info">
+     <div class="panel-heading bg-light">
+    <h3 class="panel-title bg-light ">Bienvenido al Sistema Gestor de Activos</h3>
      </div>
-      <div class="panel-body">
-          Hablada hedionda...
+      <div class="panel-body bg-light">
+          <br>
+         
+          <p >
+           Este Sistema permite la gestion de activos.
+           <br>
+           Por favor inicie sesion
+          </p>
     </div>
 </div>
+  </div>
+</div>
+        </span>
+      
+        
+       
+        
      <div >
                          <%@ include file="/presentation/bottomheader.jsp" %>  
                     </div>

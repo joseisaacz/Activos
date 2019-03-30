@@ -21,6 +21,7 @@ public class Model {
   
    HashMap<Integer,Bien> bienes;
    Solicitud sol;
+   String fecha;
    
    public Model(){
        sol=new Solicitud();
