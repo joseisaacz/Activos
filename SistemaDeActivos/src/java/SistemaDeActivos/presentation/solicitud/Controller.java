@@ -30,7 +30,8 @@ import javax.servlet.http.HttpSession;
  * @author admin
  */
 @WebServlet(name = "presentation.solicitud", urlPatterns = {"/presentation/solicitud/create/bien","/presentation/solicitud/list",
-    "/presentation/solicitud/create/solicitud.jsp","/presentation/solicitud/create/solicitud"})
+    "/presentation/solicitud/create/solicitud.jsp","/presentation/solicitud/create/solicitud", "/presentation/solicitud/delete/bien",
+"/presentation/solicitud/prepare"})
 public class Controller extends HttpServlet {
   Model model = new Model();
     /**
@@ -52,7 +53,36 @@ public class Controller extends HttpServlet {
                   this.list(request,response);
                if (request.getServletPath().equals("/presentation/solicitud/create/solicitud"))
                   this.createSolicitud(request, response);
-            
+                if (request.getServletPath().equals("/presentation/solicitud/delete/bien"))
+                this.deleteBien(request, response);
+              if (request.getServletPath().equals("/presentation/solicitud/prepare"))
+            this.prepare(request, response);
+    }
+ 
+  protected void prepare(HttpServletRequest request, 
+                                  HttpServletResponse response)
+            throws ServletException, IOException {
+  
+      
+  
+  }
+    protected void deleteBien(HttpServletRequest request, 
+                                  HttpServletResponse response)
+            throws ServletException, IOException {
+    
+        if(!model.bienes.isEmpty()){
+           
+            int num=Integer.parseInt(request.getParameter("numserie"));
+            if(model.bienes.remove(num)!=null){
+                 HttpSession session=request.getSession(true);
+                session.setAttribute("Bienes", model.listar());
+                 request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response); 
+            }
+            else{
+                 request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response); 
+            }
+        }
+    
     }
     
         protected void create(HttpServletRequest request, 
@@ -86,7 +116,7 @@ public class Controller extends HttpServlet {
              if(s.getEstado()==null)
                  throw new Exception("Datos incompletos");
               if(model.getBienes().isEmpty())
-                 throw new Exception("Datos incompletos");
+                 throw new Exception("Debe ingresar al menos un bien" );
               List<Bien> bienes=(List<Bien>)request.getSession(true).getAttribute("Bienes");
               for(Bien b: bienes){
                   //b.setSolicitud(model.getSolicitud());
@@ -98,14 +128,25 @@ public class Controller extends HttpServlet {
                 request.getRequestDispatcher("/presentation/solicitud/list").forward( request, response); 
              }
              catch(Exception e){
-                 String ex=e.toString();
+                 String error=null;
+                 if(e.getMessage().equals("Datos incompletos"))
+                 error="Datos incompletos";
+                 else
+                     if(e.getMessage().equals("Debe ingresar al menos un bien"))
+                         error="Debe ingresar al menos un bien";
+                 else
+                     error="Por favor Digite un numero";
+                 
+                 request.setAttribute("modelSolicitud",model.sol);
+                 request.setAttribute("errorSolicitud", error);
+                 request.setAttribute("date", model.fecha);
                   request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response); 
              }
              
              
          
          }
-
+        
         protected void list(HttpServletRequest request, 
                                   HttpServletResponse response)
             throws ServletException, IOException {
@@ -158,13 +199,13 @@ public class Controller extends HttpServlet {
 //     }
       Bien b= new Bien();
 
-       b.setNumero(Integer.parseInt(request.getParameter("numserie")));
+
        b.setDescripcion(request.getParameter("descripcion"));
        b.setMarca(request.getParameter("marca"));
        b.setModelo(request.getParameter("modelo"));
        b.setPrecio(Float.parseFloat(request.getParameter("precio")));
        b.setCantidad(Integer.parseInt(request.getParameter("cantidad")));
-       
+       b.setNumero(Integer.parseInt(request.getParameter("numserie")));
        return b;
 
     }
@@ -174,6 +215,7 @@ public class Controller extends HttpServlet {
      String fecha=request.getParameter("fecha");
      DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
      Date date= format.parse(fecha);
+     model.fecha=new SimpleDateFormat("yyyy-MM-dd").format(date);
      s.setFecha(date);
      s.setEstado(request.getParameter("estado"));
      String a=request.getParameter("tipo");

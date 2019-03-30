@@ -46,7 +46,7 @@
                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="rol">
                                     
                                        <a class="dropdown-item" href="/SistemaDeActivos/presentation/solicitud/create/Solicitud.jsp">Crear Solicitud</a> 
-                                        <a class="dropdown-item" href="">Ver Solicitudes</a> 
+                                       <a class="dropdown-item" href="/SistemaDeActivos/presentation/solicitud/list">Ver Solicitudes</a> 
                                      
                                    </div>
                         
