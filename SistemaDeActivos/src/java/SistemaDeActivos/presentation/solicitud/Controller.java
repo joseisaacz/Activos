@@ -30,7 +30,7 @@ import javax.servlet.http.HttpSession;
  * @author admin
  */
 @WebServlet(name = "presentation.solicitud", urlPatterns = {"/presentation/solicitud/create/bien","/presentation/solicitud/list",
-    "/presentation/solicitud/create/solicitud.jsp","/presentation/solicitud/create/solicitud"})
+    "/presentation/solicitud/create/solicitud.jsp","/presentation/solicitud/create/solicitud", "/presentation/solicitud/delete/bien"})
 public class Controller extends HttpServlet {
   Model model = new Model();
     /**
@@ -52,7 +52,27 @@ public class Controller extends HttpServlet {
                   this.list(request,response);
                if (request.getServletPath().equals("/presentation/solicitud/create/solicitud"))
                   this.createSolicitud(request, response);
+                if (request.getServletPath().equals("/presentation/solicitud/delete/bien"))
+                this.deleteBien(request, response);
             
+    }
+    protected void deleteBien(HttpServletRequest request, 
+                                  HttpServletResponse response)
+            throws ServletException, IOException {
+    
+        if(!model.bienes.isEmpty()){
+           
+            int num=Integer.parseInt(request.getParameter("numserie"));
+            if(model.bienes.remove(num)!=null){
+                 HttpSession session=request.getSession(true);
+                session.setAttribute("Bienes", model.listar());
+                 request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response); 
+            }
+            else{
+                 request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response); 
+            }
+        }
+    
     }
     
         protected void create(HttpServletRequest request, 
@@ -105,7 +125,7 @@ public class Controller extends HttpServlet {
              
          
          }
-
+        
         protected void list(HttpServletRequest request, 
                                   HttpServletResponse response)
             throws ServletException, IOException {

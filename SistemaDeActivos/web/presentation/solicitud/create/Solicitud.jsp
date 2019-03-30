@@ -97,48 +97,60 @@
                       
                     </form>
         
-        
-        <div class="container">
-            <h2>Bien</h2>
-            
-            <form method="POST" name="bien" id="validateForm" action="presentation/solicitud/create/bien" >
-                <div style="padding-left: 50px">
+        <div class="container rounded bg-light text-dark">
+             <h2>Bien</h2>
+ <form method="POST" name="bien" id="validateForm" action="presentation/solicitud/create/bien" >
+   
                <div class="row">
                  
                    <div class="col-sm">
-                       
-                            <input type="text" class="form-control" name="numserie" id="validationDefault22" 
+                       <label for="numserie">Numero de Serie</label>
+                            <input type="text" class="form-control" name="numserie" id="numserie" 
                             aria-describedby="inputGroupPrepend23" required>
                    </div>
                    
                     <div class="col-sm">
-                      
-                            <input type="text" class="form-control" name="descripcion" required>
+                                 <label for="descripcion" >Descripcion</label>
+                            <input type="text" class="form-control" name="descripcion" id="descripcion" required>
                    </div>
                    
                     <div class="col-sm">
-                      
+                      <label style="text-align: right" > Marca</label>
                             <input type="text" class="form-control" name="marca" required>
                    </div>
                    
                   
                    <div class="col-sm">
-                
+                  <label style="text-align: right" >Modelo</label>
                             <input type="text" class="form-control" name="modelo"required>
                    
                        </div>
                     <div class="col-sm">
-                      
+                      <label style="text-align: right" >Precio</label>
                             <input type="number" class="form-control" name="precio" required>
                    </div>
                    
                      <div class="col-sm">
-                     
+                       <label style="text-align: right" >Cantidad</label>
                             <input type="number" class="form-control" name="cantidad"required>
                    </div>
 
                </div>
-                </div>   
+     <div style="padding-bottom: 30px">
+                    </div>
+     <div class="col-sm">
+                  <input type="submit" id="submit" class="btn btn-success" value="AGREGAR BIEN" >
+     </div>
+  
+               </form>
+</div>
+
+                    <div style="padding-bottom: 30px">
+                    </div>
+        <div class="container">
+           
+            
+           
          
             <div class="row">
                 <table class="table table-striped">
@@ -159,6 +171,7 @@
         <th style="text-align: center">Modelo</th>
         <th style="text-align: center">Precio Unitario</th>
         <th style="text-align: center">Cantidad</th>
+        <th style="text-align: center">Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -172,7 +185,12 @@
        <td style="text-align: center"><%= b.getModelo()%></td>
        <td style="text-align: center"><%= b.getPrecio()%></td>
        <td style="text-align: center"><%= b.getCantidad()%></td>
-                                    
+       <td style="text-align: center">
+           <a href="/SistemaDeActivos/presentation/solicitud/delete/bien?numserie=<%=b.getNumero()%>"><img style=" width: 10px; height:10px "src="images/svg/si-glyph-delete.svg"/></a></td>
+
+
+
+                            
                             </tr>
                     <% }
                     %>
@@ -184,11 +202,12 @@
             
            
             
-                <input type="submit" id="submit" class="btn btn-success" value="OK" >
-            </form>
+          
+  
         </div>
       
-         <div >
+                    
+         <div style="padding-top: 100px" >
                          <%@ include file="/presentation/bottomheader.jsp" %>  
                     </div>
  
