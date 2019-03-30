@@ -18,11 +18,9 @@
 
 <body>
  
-<%@ include file="/presentation/Header.jsp" %>
-
 <% Usuario model= (Usuario) request.getAttribute("model"); %>
-<% Map<String,String> errors = (Map<String,String>) request.getAttribute("errors"); %>        
-<% Map<String,String[]> values = (errors==null)?this.getValues(model):request.getParameterMap();%>
+<% Boolean error = (Boolean) request.getAttribute("errorBase"); %>        
+
        
  <div style="margin-top: 100px" >
      
@@ -49,12 +47,26 @@
            
         </div>
 
-   
+    <% if( error!= null && error.booleanValue()) { %>
+            
+              
+        <div class="container">
+        <Medium id="Error" class="text-danger">
+          Error! Datos ingresados son invalidos
+        </Medium>      
+      </div>
+    <div style="padding-top: 10px">
+    </div>
+       <% } %>
       <div class="form-group"> 
       <input type="submit" class="btn btn-success" value="OK">   
       </div> 
         
+
+       
         
+
+      
         
         
         

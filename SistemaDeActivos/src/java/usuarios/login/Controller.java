@@ -58,24 +58,22 @@ public class Controller extends HttpServlet {
     private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
         if(this.verificar(request)){
             Map<String,String> errors =  this.validar(request);
+            boolean errorBase=false;
             if(errors.isEmpty()){
                  Usuario model = new Usuario();
                 updateModel(model,request);
                 request.setAttribute("model", model);
                 Usuario logged=null;
                 try {
-                    //SistemaDeActivos.logic.Model _model2= SistemaDeActivos.logic.Model.instance();
-                   // SistemaDeActivos.logic.Modelv2 _model= SistemaDeActivos.logic.Modelv2.instance();
-                    //List<Categoria> cat=_model2.recuperarCategorias();
-                    //String id=model.getId();
-                    //String clave=model.getClave();
-                    //logged=_model.getUsuario(id, clave);
-                    
+               
                     logged=Model.instance().getUsuario(model.getId(), model.getClave());
                     request.getSession(true).setAttribute("logged", logged);
+                    errorBase=false;
+                     request.setAttribute("errorBase", errorBase);
                  request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward(request, response);
                 } catch (Exception ex) {
-                    String es=ex.toString();
+                    errorBase=true;
+                    request.setAttribute("errorBase", errorBase);
                     request.getRequestDispatcher("/presentation/usuarios/login/View.jsp").forward(request, response);
                 }  
                    
