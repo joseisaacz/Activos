@@ -4,6 +4,7 @@
     Author     : admin
 --%>
 
+<%@page import="SistemaDeActivos.logic.Solicitud"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
@@ -19,12 +20,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-     <%@ include file="/presentation/headerprin.jsp" %>  
+          <title>Solicitud</title>
+        <%@ include file="/presentation/headerprin.jsp" %>  
     
             
-        <title>Solicitud</title>
+ 
     </head>
     <body>
+       
         <div style="margin-top: 100px" >
      
         </div>
@@ -34,12 +37,13 @@
                     <h2>Solicitud</h2>
                     
                     <form method="POST" name="solicitud" action="/SistemaDeActivos/presentation/solicitud/create/solicitud">
+                        <% Solicitud sol=(Solicitud) request.getAttribute("modelSolicitud");%>
                         <div class="row">
                             <div class="col">
                                 
                                <div class="form-group">
                             <label >Numero de Comprobante</label>
-                            <input type="text" class="form-control" name="numcomp">
+                            <input type="text" class="form-control" name="numcomp"  <% if(sol!=null){ %> value="<%=sol.getComprobante()%>"<%} %> required>
                             
                         </div> 
                             </div>
@@ -47,7 +51,8 @@
                             <div class="col">
                                  <div class="form-group">
                             <label >Fecha</label>
-                            <input type="date" class="form-control" name="fecha">
+                            <% String date=(String)request.getAttribute("date"); %>
+                            <input type="date" class="form-control" name="fecha" required value="<%= date!=null ? date: null %>">
                             
                         </div>
                                 </div>
@@ -55,9 +60,9 @@
                             <div class="col">
                                 <div class="form-group">
                             <label >Tipo de Adquisicion</label>
-                            <select name="tipo" class="form-control">
-                                <option value="Donacion">Donacion</option>
-                                 <option value="Compra">Compra</option>
+                            <select name="tipo" class="form-control" required >
+                                <option value="Donacion"<% if(sol!=null && sol.getTipo().equals("Donacion")){%> selected<% } %> >Donacion</option>
+                                 <option value="Compra"<% if(sol!=null && sol.getTipo().equals("Compra")){ %> selected <% } %>  > Compra</option>
                                 
                                 
                             </select>
@@ -76,7 +81,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                   <label for="disabledSelect">Estado de Solicitud</label>
-                                    <select id="disabledSelect" name="estado" class="form-control" >
+                                    <select id="disabledSelect" name="estado" class="form-control" required <% if(sol!=null){ %>value="<%=sol.getEstado()%>"<%} %>>
                                 <option value="Enviado al Sistema">Enviado al Sistema</option>
                                  <option value="En espera de aprobacion">En espera de Aprobacion</option>
                                
@@ -86,17 +91,28 @@
                            
                           </div>      
        
-                        <div class="row">
-                            <div class="form-group">
-                                    <input type="submit" id="submit" class="btn btn-success" value="OK" >
+ 
+                            <div class="col-sm-4">
+                                <%String errorSolicitud=(String)request.getAttribute("errorSolicitud"); %>
+                                <% if(errorSolicitud!=null){%>
+                                <div class="container">
+                       <Medium id="Error" class="text-danger">
+                       <%=errorSolicitud %>
+                      </Medium>      
+                       </div>
+                       <div style="padding-top: 10px">
+                         </div>
+                             <%  } %>
+                                    <input type="submit" id="submit" class="btn btn-success" value="AGREGAR SOLICITUD" >
                                 </div>
-                        </div>
+                       
                         
                        
                        
                       
                     </form>
-        
+               </div>
+                                    <div style="padding-top: 30px"></div>
         <div class="container rounded bg-light text-dark">
              <h2>Bien</h2>
  <form method="POST" name="bien" id="validateForm" action="presentation/solicitud/create/bien" >
