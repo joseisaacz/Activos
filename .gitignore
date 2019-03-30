@@ -21,10 +21,8 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-*.dpf
-*.xml
+
 SistemaDeActivos/build/web/WEB-INF/classes/hibernate.cfg.xml
 SistemaDeActivos/build/web/gfv3ee6.dpf
 SistemaDeActivos/nbproject/private/private.xml
-*.xml
 SistemaDeActivos/nbproject/private/private.properties
