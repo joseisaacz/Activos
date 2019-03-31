@@ -57,27 +57,40 @@ public class Model {
         return query.list();
     }
        public void agregarSolicitud(Solicitud solicitud){
+
         Transaction t = ses.beginTransaction();
-        ses.persist(solicitud);
+        ses.save(solicitud);
+        
+         t.commit(); 
+                 
+                for(Bien b: solicitud.getBiens()){
+            this.agregarBien(b);
+        }
+    }
+       public void agregarBien(Bien bien){
+        Transaction t = ses.beginTransaction();
+        ses.persist(bien);
         t.commit();        
     }
-         public List<Solicitud> recuperarSolicitudes() {
+
+            public List<Solicitud> recuperarSolicitudes() {
         Query query = ses.createQuery("from Solicitud");
-        List<Solicitud> solicitudes = query.list();
-        for(Solicitud s: solicitudes){
-            Hibernate.initialize(s.getBiens());
-            int sizes = s.getBiens().size();
-            ses.evict(s);
-        }
-        return solicitudes;
+        return query.list();
     }
+            
          public Solicitud recuperar(int i)throws Exception{
+                 try{
         Solicitud s = (Solicitud) ses.get(Solicitud.class, i);
         Hibernate.initialize(s.getBiens());
         Hibernate.initialize(s.getDependencia());
+        Hibernate.isInitialized(s.getFuncionario());
         ses.evict(s);
         return s;
          }
-    
+         catch(Exception e){
+                String ex=e.getMessage();
+         }
+           return null;      
+         }
 }
 
