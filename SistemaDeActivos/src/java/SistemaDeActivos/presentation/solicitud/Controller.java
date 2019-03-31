@@ -122,18 +122,23 @@ public class Controller extends HttpServlet {
                  throw new Exception("Datos incompletos");
               if(model.getBienes().isEmpty())
                  throw new Exception("Debe ingresar al menos un bien" );
-              List<Bien> bienes=(List<Bien>)request.getSession(true).getAttribute("Bienes");
+              List<Bien> bienes=new ArrayList((List<Bien>)request.getSession(true).getAttribute("Bienes"));
+              Solicitud sol=model.getSolicitud();
               for(Bien b: bienes){
-                  //b.setSolicitud(model.getSolicitud());
-              model.getSolicitud().getBiens().add(b);
+                 b.setSolicitud(sol);
+              sol.getBiens().add(b);
               }
-               SistemaDeActivos.logic.Model.instance().agregarSolicitud(model.getSolicitud());
-               bienes.clear();
-               model.getBienes().clear();
+               SistemaDeActivos.logic.Model.instance().agregarSolicitud(sol);
+             
+                      bienes.clear();
+              // model.getBienes().clear();
                request.getSession(true).setAttribute("Bienes", bienes);
+                  List<Solicitud> lista= SistemaDeActivos.logic.Model.instance().recuperarSolicitudes();
+                  this.prueba();
                 request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response); 
              }
              catch(Exception e){
+                 String pru=e.getMessage();
                  String error=null;
                  if(e.getMessage().equals("Datos incompletos"))
                  error="Datos incompletos";
@@ -152,7 +157,9 @@ public class Controller extends HttpServlet {
              
          
          }
-        
+        protected void prueba(){
+               List<Solicitud> listasc= SistemaDeActivos.logic.Model.instance().recuperarSolicitudes();
+        }
         protected void list(HttpServletRequest request, 
                                   HttpServletResponse response)
             throws ServletException, IOException {
@@ -246,6 +253,9 @@ public class Controller extends HttpServlet {
                                   HttpServletResponse response)throws Exception{
      try{
          Solicitud s = (Solicitud) SistemaDeActivos.logic.Model.instance().recuperar(Integer.parseInt(request.getParameter("numero")));
+       
+         
+    
          model.sol.setComprobante(s.getComprobante());
          model.sol.setDependencia(s.getDependencia());
          model.sol.setEstado(s.getEstado());
@@ -253,10 +263,12 @@ public class Controller extends HttpServlet {
          model.sol.setFuncionario(s.getFuncionario());
          model.sol.setNumero(s.getNumero());
          model.sol.setTipo(s.getTipo());
+         
 //         model.sol.setBiens(s.getBiens());
          int si=s.getBiens().size();
-         List<Bien> lista= new ArrayList<Bien>(s.getBiens());
-         for(Bien b:lista){
+         List<Bien> listav2= new ArrayList<Bien>(s.getBiens());
+         
+         for(Bien b:listav2){
              try {
                 model.agregarB(b,b.getNumero());
                 HttpSession session=request.getSession(true);
@@ -265,9 +277,11 @@ public class Controller extends HttpServlet {
             } catch (Exception ex) {      
             }
          }
+         
          request.setAttribute("modelSolicitud",model.sol);
             
          request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response);
+        
      }catch(Exception ex){
          
      } 
