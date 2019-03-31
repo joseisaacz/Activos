@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Session;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +34,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "presentation.solicitud", urlPatterns = {"/presentation/solicitud/create/bien","/presentation/solicitud/list",
     "/presentation/solicitud/create/solicitud.jsp","/presentation/solicitud/create/solicitud", "/presentation/solicitud/delete/bien",
-"/presentation/solicitud/prepare"})
+"/presentation/solicitud/prepare", "/presentation/solicitud/consult"})
 public class Controller extends HttpServlet {
   Model model = new Model();
     /**
@@ -46,7 +48,7 @@ public class Controller extends HttpServlet {
      */
  protected void processRequest(HttpServletRequest request, 
                                   HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, Exception {
      String a= request.getServletPath();
             if (request.getServletPath().equals("/presentation/solicitud/create/bien"))
                 this.create(request, response);
@@ -58,6 +60,8 @@ public class Controller extends HttpServlet {
                 this.deleteBien(request, response);
               if (request.getServletPath().equals("/presentation/solicitud/prepare"))
             this.prepare(request, response);
+              if(request.getServletPath().equals("/presentation/solicitud/consult"))
+                  this.consult(request, response);
     }
  
   protected void prepare(HttpServletRequest request, 
@@ -167,7 +171,11 @@ public class Controller extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+      try {
+          processRequest(request, response);
+      } catch (Exception ex) {
+          Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+      }
     }
 
     /**
@@ -181,7 +189,11 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+      try {
+          processRequest(request, response);
+      } catch (Exception ex) {
+          Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+      }
     }
 
     /**
@@ -229,8 +241,48 @@ public class Controller extends HttpServlet {
      return s;
      
  }
-// protected void verificarbien()throws Exception{
-//     if()
-// } 
+ 
+ protected void consult(HttpServletRequest request, 
+                                  HttpServletResponse response)throws Exception{
+     try{
+         Solicitud s = (Solicitud) SistemaDeActivos.logic.Model.instance().recuperar(Integer.parseInt(request.getParameter("numero")));
+         model.sol.setComprobante(s.getComprobante());
+         model.sol.setDependencia(s.getDependencia());
+         model.sol.setEstado(s.getEstado());
+         model.sol.setFecha(s.getFecha());
+         model.sol.setFuncionario(s.getFuncionario());
+         model.sol.setNumero(s.getNumero());
+         model.sol.setTipo(s.getTipo());
+//         model.sol.setBiens(s.getBiens());
+         int si=s.getBiens().size();
+         List<Bien> lista= new ArrayList<Bien>(s.getBiens());
+         for(Bien b:lista){
+             try {
+                model.agregarB(b,b.getNumero());
+                HttpSession session=request.getSession(true);
+                session.setAttribute("Bienes", model.listar());
+                 
+            } catch (Exception ex) {      
+            }
+         }
+         request.setAttribute("modelSolicitud",model.sol);
+            
+         request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response);
+     }catch(Exception ex){
+         
+     } 
+ }
  
 }
+
+
+//         List<Bien> lista= (List<Bien>) s.getBiens();
+//         for(Bien b:lista){
+//             try {
+//                model.agregarB(b,b.getNumero());
+//                HttpSession session=request.getSession(true);
+//                session.setAttribute("Bienes", model.listar());
+//                 
+//            } catch (Exception ex) {      
+//            }
+//         }

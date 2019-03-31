@@ -38,10 +38,10 @@
                    
     <thead>
       <tr>
+          <th style="text-align: left">Numero de Solicitud</th>
           <th style="text-align: left">Numero de Comprobante</th>
         <th style="text-align: left">Fecha</th>
         <th style="text-align: left">Tipo</th>
-        <th style="text-align: center">Cantidad de bienes</th>
         <th style="text-align: center">Estado</th>
      
       </tr>
@@ -51,10 +51,10 @@
           if(model.size()!=0 )
           for(Solicitud s: model){ %>
                             <tr>
-       <td style="text-align: left"><%= s.getComprobante() %></td>
-       <td style="text-align: left"><%= date(s.getFecha()) %></td>
+      <td style="text-align: left"><a href="/SistemaDeActivos/presentation/solicitud/consult?numero=<%=s.getNumero()%>"><%= s.getNumero() %></a></td>                          
+      <td style="text-align: left"><%= s.getComprobante() %></td>
+      <td style="text-align: left"><%= date(s.getFecha()) %></td>
       <td style="text-align: left"><%= s.getTipo() %></td>
-      <td style="text-align: center"><%= s.getBiens().size() %></td>
       <td style="text-align: center"><%= s.getEstado() %></td>
      
                                     
