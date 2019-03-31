@@ -63,8 +63,21 @@ public class Model {
     }
          public List<Solicitud> recuperarSolicitudes() {
         Query query = ses.createQuery("from Solicitud");
-        return query.list();
+        List<Solicitud> solicitudes = query.list();
+        for(Solicitud s: solicitudes){
+            Hibernate.initialize(s.getBiens());
+            int sizes = s.getBiens().size();
+            ses.evict(s);
+        }
+        return solicitudes;
     }
+         public Solicitud recuperar(int i)throws Exception{
+        Solicitud s = (Solicitud) ses.get(Solicitud.class, i);
+        Hibernate.initialize(s.getBiens());
+        Hibernate.initialize(s.getDependencia());
+        ses.evict(s);
+        return s;
+         }
     
 }
 

@@ -43,7 +43,7 @@
                                 
                                <div class="form-group">
                             <label >Numero de Comprobante</label>
-                            <input type="text" class="form-control" name="numcomp"  <% if(sol!=null){ %> value="<%=sol.getComprobante()%>"<%} %> required>
+                            <input type="text" class="form-control" name="numcomp"  <% if(sol!=null){ %> value="<%=sol.getComprobante()%>"  disabled<%} %> required>
                             
                         </div> 
                             </div>
@@ -52,7 +52,7 @@
                                  <div class="form-group">
                             <label >Fecha</label>
                             <% String date=(String)request.getAttribute("date"); %>
-                            <input type="date" class="form-control" name="fecha" required value="<%= date!=null ? date: null %>">
+                            <input type="date" class="form-control" name="fecha" required  <% if(sol!=null){ %> value="<%=sol.getFecha()%>"  disabled<%} %> > <!--value="<%= date!=null ? date: null %>"-->
                             
                         </div>
                                 </div>
@@ -60,8 +60,8 @@
                             <div class="col">
                                 <div class="form-group">
                             <label >Tipo de Adquisicion</label>
-                            <select name="tipo" class="form-control" required >
-                                <option value="Donacion"<% if(sol!=null && sol.getTipo().equals("Donacion")){%> selected<% } %> >Donacion</option>
+                            <select name="tipo" class="form-control" required <% if(sol!=null){ %> disabled<%} %>>
+                                <option value="Donacion"<% if(sol!=null && sol.getTipo().equals("Donacion")){%> selected <% } %> >Donacion</option>
                                  <option value="Compra"<% if(sol!=null && sol.getTipo().equals("Compra")){ %> selected <% } %>  > Compra</option>
                                 
                                 
@@ -81,9 +81,9 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                   <label for="disabledSelect">Estado de Solicitud</label>
-                                    <select id="disabledSelect" name="estado" class="form-control" required <% if(sol!=null){ %>value="<%=sol.getEstado()%>"<%} %>>
-                                <option value="Enviado al Sistema">Enviado al Sistema</option>
-                                 <option value="En espera de aprobacion">En espera de Aprobacion</option>
+                                    <select id="disabledSelect" name="estado" class="form-control" required <% if(sol!=null){ %> disabled<%} %>>
+                                <option value="Enviado al Sistema" <% if(sol!=null && sol.getEstado().equals("Enviado al Sistema")){%> selected <% } %>>Enviado al Sistema</option>
+                                 <option value="En espera de aprobacion" <% if(sol!=null && sol.getEstado().equals("En espera de Aprobacion")){%> selected <% } %>>En espera de Aprobacion</option>
                                
                                     </select>
                                 </div> 
@@ -103,7 +103,7 @@
                        <div style="padding-top: 10px">
                          </div>
                              <%  } %>
-                                    <input type="submit" id="submit" class="btn btn-success" value="AGREGAR SOLICITUD" >
+                                    <input type="submit" id="submit" class="btn btn-success" value="AGREGAR SOLICITUD" <% if(sol!=null){ %> disabled<%} %>>
                                 </div>
                        
                         
@@ -155,7 +155,7 @@
      <div style="padding-bottom: 30px">
                     </div>
      <div class="col-sm">
-                  <input type="submit" id="submit" class="btn btn-success" value="AGREGAR BIEN" >
+                  <input type="submit" id="submit" class="btn btn-success" value="AGREGAR BIEN" <% if(sol!=null){ %> disabled<%} %> >
      </div>
   
                </form>
@@ -177,8 +177,9 @@
                     }
                     else{
                        model= new ArrayList();  
-                    }
+                        }
                     %>
+          
     <thead>
       <tr>
           <th style="text-align: center">Numero de Serie</th>
