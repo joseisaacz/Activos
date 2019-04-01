@@ -202,8 +202,8 @@
        <td style="text-align: center"><%= b.getModelo()%></td>
        <td style="text-align: center"><%= b.getPrecio()%></td>
        <td style="text-align: center"><%= b.getCantidad()%></td>
-       <td style="text-align: center">
-           <a href="/SistemaDeActivos/presentation/solicitud/delete/bien?numserie=<%=b.getNumero()%>" <% if(sol!=null){ %> disabled<%} %>><img style=" width: 10px; height:10px "src="images/delete.png"/></a></td>
+       <td style="text-align: center"  >
+           <a <% if(sol==null){ %>href="/SistemaDeActivos/presentation/solicitud/delete/bien?numserie=<%=b.getNumero()%>"<%} %>><img style=" width: 10px; height:10px "src="images/delete.png"/></a></td>
 
 
 
