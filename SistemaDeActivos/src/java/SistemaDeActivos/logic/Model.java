@@ -77,6 +77,11 @@ public class Model {
         Query query = ses.createQuery("from Solicitud");
         return query.list();
     }
+    public List<Solicitud> recuperarSolicitudAdministrador(int codigoDependencia) {
+        Query query = ses.createQuery("from Solicitud s where s.dependencia like :codigo");
+        query.setInteger("codigo",codigoDependencia);
+        return query.list();
+    }
             
          public Solicitud recuperar(int i)throws Exception{
                  try{

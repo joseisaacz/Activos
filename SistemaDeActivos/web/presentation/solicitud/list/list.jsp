@@ -32,7 +32,9 @@
        
                     <table class="table table-hover">
                          <caption style="caption-side: top; font-size: 35px; text-align: center"><span class="badge badge-pill badge-info">Lista de Solicitudes</span></caption>
-                    <% List<Solicitud> model= SistemaDeActivos.logic.Model.instance().recuperarSolicitudes(); %>
+                         <% Usuario a= (Usuario) request.getSession(true).getAttribute("logged");
+                     int depen = a.getFuncionario().getDependencia().getCodigo();
+                     List<Solicitud> model= SistemaDeActivos.logic.Model.instance().recuperarSolicitudAdministrador(depen); %>
                            
                     
                    
