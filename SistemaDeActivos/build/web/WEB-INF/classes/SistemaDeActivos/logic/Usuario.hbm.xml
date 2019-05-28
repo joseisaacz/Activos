@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 26-Mar-2019 22:32:57 by Hibernate Tools 4.3.1 -->
+<!-- Generated 25-May-2019 01:33:07 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="SistemaDeActivos.logic.Usuario" table="usuario" catalog="inventario" optimistic-lock="version">
         <id name="id" type="string">
@@ -17,5 +17,11 @@
         <property name="rol" type="string">
             <column name="rol" length="20" />
         </property>
+        <set name="grupos" table="grupo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="SistemaDeActivos.logic.Grupo" />
+        </set>
     </class>
 </hibernate-mapping>

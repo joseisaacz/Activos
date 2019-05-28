@@ -30,7 +30,7 @@ public class Model {
    }
    
    public void agregarBien(int num, String desc, String mod,String marc ,float precio, int cant){
-       Bien b= new Bien(num,desc,mod,marc,precio,cant);
+      Bien b= new Bien(num,desc,mod,marc,precio,cant);
        bienes.put(num, b);
        
    }

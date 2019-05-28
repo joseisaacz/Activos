@@ -4,6 +4,7 @@
     Author     : admin
 --%>
 
+<%@page import="SistemaDeActivos.logic.Funcionario"%>
 <%@page import="SistemaDeActivos.logic.Solicitud"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.HashMap"%>
@@ -16,12 +17,10 @@
     <head>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
           <title>Solicitud</title>
         <%@ include file="/presentation/headerprin.jsp" %>  
+                          <link rel = "stylesheet" type = "text/css" href = "css/css/bootstrap.css" >
     
             
  
@@ -33,12 +32,22 @@
         </div>
         
         <div class="container">
-         
+                    <%                String edit=(String)request.getSession().getAttribute("editar"); %>
                     <h2>Solicitud</h2>
                     
-                    <form method="POST" name="solicitud" action="/SistemaDeActivos/presentation/solicitud/create/solicitud">
+                    <form method="POST" name="solicitud" action=<% if(us.getRol().equals("Administrador")){ %>"/SistemaDeActivos/presentation/solicitud/create/solicitud" <%}
+                       else if(us.getRol().equals("Secretaria OCCB")){
+                          %> 
+                          "/SistemaDeActivos/presentation/solicitud/create/updatesolicitud" <%} else if(us.getRol().equals("Jefe OCCB")){%>
+                           "/SistemaDeActivos/presentation/solicitud/create/updatesolicitudJefe"<%}%>>
+                   
+                          
+
+                        
                         <% Solicitud sol=(Solicitud) request.getAttribute("modelSolicitud");%>
                         <div class="row">
+                            
+                         
                             <div class="col">
                                 
                                <div class="form-group">
@@ -81,16 +90,52 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                   <label for="disabledSelect">Estado de Solicitud</label>
-                                    <select id="disabledSelect" name="estado" class="form-control" required <% if(sol!=null){ %> disabled<%} %>>
-                                <option value="Enviado al Sistema" <% if(sol!=null && sol.getEstado().equals("Enviado al Sistema")){%> selected <% } %>>Enviado al Sistema</option>
-                                 <option value="En espera de aprobacion" <% if(sol!=null && sol.getEstado().equals("En espera de Aprobacion")){%> selected <% } %>>En espera de Aprobacion</option>
-                               
+                                    <select id="disabledSelect" name="estado" class="form-control" required>
+                                        <%if(us.getRol().equals("Administrador")){ %>
+                                <option value="Enviado al Sistema">Enviado al Sistema</option>
+                                <%} 
+                                   else
+                                    if(us.getRol().equals("Secretaria OCCB")){ %>
+                                 <option value="En espera de aprobacion">En espera de Aprobacion</option>
+                                  <option value="Rechazada">Rechazada</option>
+                                  <%}
+                                        else if(us.getRol().equals("Jefe OCCB")){ %>
+                                            <option value="Asignado a Registrador">Asignada a Registrado</option> 
+                                              <% } %>
+                                   
                                     </select>
                                 </div> 
                             </div>
+                                              
+                                              <% if(us.getRol().equals("Jefe OCCB")){  %>
+                                              <div class="col-sm-4">
+                                                  <div class="form-group">
+                                                      <label for="registrador">Registrador</label>
+                                                      <select name="registrador" class="form-control" required>
+                                                          <%  List<Usuario> reg= SistemaDeActivos.logic.Model.instance().UsuariosRegistradores();
+                                                             List<Funcionario> fun = new ArrayList();
+                                                             for(Usuario u : reg){
+                                                                 fun.add(u.getFuncionario());
+                                                             }
+                                                             if( !fun.isEmpty()){
+                                                                 
+                                                             for(Funcionario f: fun){    
+                                                             
+                                                          %>
+                                                           <option value="<%=f.getId()%>"><%= f.getNombre()%></option> 
+                                                           <% } %>
+                                                           <% } else { %>
+                                                            <option value="null">Por favor agregue un registrador</option>
+                                                            <% } %>
+                                                      </select>
+                                                      
+                                                  </div>
+                                                      <% } %>
+                                                  
+                        </div>
                            
                           </div>      
-       
+                                                                     
  
                             <div class="col-sm-4">
                                 <%String errorSolicitud=(String)request.getAttribute("errorSolicitud"); %>
@@ -103,7 +148,17 @@
                        <div style="padding-top: 10px">
                          </div>
                              <%  } %>
+                             <% if(us.getRol().equals("Administrador")){%>
                                     <input type="submit" id="submit" class="btn btn-success" value="AGREGAR SOLICITUD" <% if(sol!=null){ %> disabled<%} %>>
+                                    <%} 
+                                     else if(us.getRol().equals("Secretaria OCCB")){
+                      
+                                    %>
+                                     <input type="submit" id="submit" class="btn btn-success" value="ACTUALIZAR SOLICITUD"<%if(edit != null){ %> disabled<%} %>><%  }
+                                     else if(us.getRol().equals("Jefe OCCB")){
+                                     %> 
+                   
+                                      <input type="submit" id="submit" class="btn btn-success" value="ACTUALIZAR SOLICITUD" ><%}%>
                                 </div>
                        
                         
@@ -155,6 +210,16 @@
      <div style="padding-bottom: 30px">
                     </div>
      <div class="col-sm">
+           <%String errorBien=(String)request.getAttribute("errorBien"); %>
+                                <% if(errorBien!=null){%>
+                                <div class="container">
+                       <Medium id="Error" class="text-danger">
+                       <%=errorBien %>
+                      </Medium>      
+                       </div>
+                       <div style="padding-top: 10px">
+                         </div>
+                             <%  } %>
                   <input type="submit" id="submit" class="btn btn-success" value="AGREGAR BIEN" <% if(sol!=null){ %> disabled<%} %> >
      </div>
   
@@ -219,7 +284,7 @@
             
            
             
-          
+                    <%request.getSession().setAttribute("editar", null);  %> 
   
         </div>
       
@@ -227,7 +292,9 @@
          <div style="padding-top: 100px" >
                          <%@ include file="/presentation/bottomheader.jsp" %>  
                     </div>
- 
+              <script type="text/javascript" src="css/js/jquery.js"></script>
+  <script type="text/javascript" src="css/js/bootstrap.js"></script>
+ <script  src="js/ajax.js"></script>
     </body>
     
           

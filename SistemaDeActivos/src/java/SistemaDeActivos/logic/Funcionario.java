@@ -1,5 +1,5 @@
 package SistemaDeActivos.logic;
-// Generated 26-Mar-2019 22:32:56 by Hibernate Tools 4.3.1
+// Generated 25-May-2019 01:33:06 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -14,6 +14,7 @@ public class Funcionario  implements java.io.Serializable {
      private String id;
      private Dependencia dependencia;
      private String nombre;
+     private Set<Activo> activos = new HashSet<Activo>(0);
      private Set<Solicitud> solicituds = new HashSet<Solicitud>(0);
      private Set<Usuario> usuarios = new HashSet<Usuario>(0);
      private Set<Dependencia> dependencias = new HashSet<Dependencia>(0);
@@ -26,10 +27,11 @@ public class Funcionario  implements java.io.Serializable {
         this.id = id;
         this.dependencia = dependencia;
     }
-    public Funcionario(String id, Dependencia dependencia, String nombre, Set<Solicitud> solicituds, Set<Usuario> usuarios, Set<Dependencia> dependencias) {
+    public Funcionario(String id, Dependencia dependencia, String nombre, Set<Activo> activos, Set<Solicitud> solicituds, Set<Usuario> usuarios, Set<Dependencia> dependencias) {
        this.id = id;
        this.dependencia = dependencia;
        this.nombre = nombre;
+       this.activos = activos;
        this.solicituds = solicituds;
        this.usuarios = usuarios;
        this.dependencias = dependencias;
@@ -55,6 +57,13 @@ public class Funcionario  implements java.io.Serializable {
     
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    public Set<Activo> getActivos() {
+        return this.activos;
+    }
+    
+    public void setActivos(Set<Activo> activos) {
+        this.activos = activos;
     }
     public Set<Solicitud> getSolicituds() {
         return this.solicituds;

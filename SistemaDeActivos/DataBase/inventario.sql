@@ -158,3 +158,18 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- -----------------------------------------------------
+-- Inserts
+-- -----------------------------------------------------
+insert into dependencia(codigo,nombre) values(1,'Informatica');
+insert into funcionario(id,nombre,dependencia) values('001','Juan',1);
+insert into usuario (funcionario,id,clave,rol) values('001','001','001','ADMIN');
+update dependencia set administrador='001' where codigo=1;
+insert into dependencia(codigo,nombre) values(2,'Matematica');
+insert into funcionario(id,nombre,dependencia) values('002','Pedro',2);
+insert into usuario (funcionario,id,clave,rol) values('002','002','002','ADMIN');
+update dependencia set administrador='002' where codigo=2;
+
+
+
+

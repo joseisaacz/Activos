@@ -41,11 +41,12 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-catalog="inventario"/>
-  <table-filter match-name="solicitud"/>
-  <table-filter match-name="usuario"/>
-  <table-filter match-name="activo"/>
-  <table-filter match-name="bien"/>
   <table-filter match-name="dependencia"/>
+  <table-filter match-name="activo"/>
+  <table-filter match-name="usuario"/>
   <table-filter match-name="categoria"/>
   <table-filter match-name="funcionario"/>
+  <table-filter match-name="grupo"/>
+  <table-filter match-name="solicitud"/>
+  <table-filter match-name="bien"/>
 </hibernate-reverse-engineering>

@@ -1,5 +1,5 @@
 package SistemaDeActivos.logic;
-// Generated 26-Mar-2019 22:32:56 by Hibernate Tools 4.3.1
+// Generated 25-May-2019 01:33:06 by Hibernate Tools 4.3.1
 
 
 
@@ -9,30 +9,37 @@ package SistemaDeActivos.logic;
 public class Activo  implements java.io.Serializable {
 
 
-     private int codigo;
+     private Integer codigo;
      private Bien bien;
      private Categoria categoria;
-     private int dependencia;
-     private String funcionario;
-     private int puesto;
+     private Dependencia dependencia;
+     private Funcionario funcionario;
+     private int consecutivo;
+     private String puesto;
 
     public Activo() {
     }
 
-    public Activo(int codigo, Bien bien, Categoria categoria, int dependencia, String funcionario, int puesto) {
-       this.codigo = codigo;
+	
+    public Activo(Bien bien, Categoria categoria, int consecutivo) {
+        this.bien = bien;
+        this.categoria = categoria;
+        this.consecutivo = consecutivo;
+    }
+    public Activo(Bien bien, Categoria categoria, Dependencia dependencia, Funcionario funcionario, int consecutivo, String puesto) {
        this.bien = bien;
        this.categoria = categoria;
        this.dependencia = dependencia;
        this.funcionario = funcionario;
+       this.consecutivo = consecutivo;
        this.puesto = puesto;
     }
    
-    public int getCodigo() {
+    public Integer getCodigo() {
         return this.codigo;
     }
     
-    public void setCodigo(int codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
     public Bien getBien() {
@@ -49,25 +56,32 @@ public class Activo  implements java.io.Serializable {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
-    public int getDependencia() {
+    public Dependencia getDependencia() {
         return this.dependencia;
     }
     
-    public void setDependencia(int dependencia) {
+    public void setDependencia(Dependencia dependencia) {
         this.dependencia = dependencia;
     }
-    public String getFuncionario() {
+    public Funcionario getFuncionario() {
         return this.funcionario;
     }
     
-    public void setFuncionario(String funcionario) {
+    public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
-    public int getPuesto() {
+    public int getConsecutivo() {
+        return this.consecutivo;
+    }
+    
+    public void setConsecutivo(int consecutivo) {
+        this.consecutivo = consecutivo;
+    }
+    public String getPuesto() {
         return this.puesto;
     }
     
-    public void setPuesto(int puesto) {
+    public void setPuesto(String puesto) {
         this.puesto = puesto;
     }
 

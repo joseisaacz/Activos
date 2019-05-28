@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 25-May-2019 01:33:07 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="SistemaDeActivos.logic.Grupo" table="grupo" catalog="inventario" optimistic-lock="version">
+        <composite-id name="id" class="SistemaDeActivos.logic.GrupoId">
+            <key-property name="grupo" type="string">
+                <column name="grupo" length="20" />
+            </key-property>
+            <key-property name="id" type="string">
+                <column name="id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="usuario" class="SistemaDeActivos.logic.Usuario" update="false" insert="false" fetch="select">
+            <column name="id" length="20" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>
