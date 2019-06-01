@@ -28,13 +28,13 @@
          <h3 style="text-align: center">Registrar Funcionario</h3> 
         <div class="jumbotron">
            
-        <form method="POST" name="formulario" id="formulario" action="SistemaDeActivos/presentation/create/funcionario">
+        <form method="POST" name="formulario" id="formulario" action=" <%=model==null? "/SistemaDeActivos/presentation/create/funcionario":"/SistemaDeActivos/presentation/funcionario/update?numFun="+model.getId()%>">
             
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                             <label >ID de Funcionario</label>
-                            <input type="text" class="form-control" id="id"  name="idFuncionario" required <% if(model!=null){%> value="<%= model.getId() %>" <%}%>>
+                            <input type="text" class="form-control" id="id"  name="idFuncionario" required <% if(model!=null){%> value="<%= model.getId() %>"disabled <%}%>>
                             
                         </div>    
                 </div>
@@ -56,7 +56,7 @@
                       <% if(list != null){ %>
                       
                            <%for(Dependencia d : list){ %>
-                           <option value="<%= d.getCodigo() %>" <%if(d.getCodigo()==model.getDependencia().getCodigo()){ %> selected <%} %>><%= d.getNombre() %></option>
+                           <option value="<%= d.getCodigo() %>" <%if(model!=null && model.getDependencia()!=null) if(d.getCodigo()==model.getDependencia().getCodigo()){ %> selected <%} %>><%= d.getNombre() %></option>
                            <%} %>
  
                       <% }  else{  %>
@@ -72,7 +72,7 @@
                  <div style="margin-left: 250px"></div>
                 <div class="col">
                    
-                    <input type="submit" id="submit" class="btn btn-success" value="AGREGAR Funcionario" > 
+                  <input type="submit" id="submit" class="btn btn-success" value="AGREGAR">
                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
                     &nbsp; &nbsp; &nbsp; &nbsp; 
@@ -81,6 +81,13 @@
          
                  
                 </div>
+            <%}
+                else{%>
+                <div>
+                    <input type="submit" id="submit" class="btn btn-success" value="ACTUALIZAR">
+                      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
+                      <a href="/SistemaDeActivos/presentation/funcionario/delete?idFunc=<%=model.getId()%>" class="btn btn-danger">ELIMINAR</a>
+                   </div>
             <%}%>
         </form>
              <%if(editar != null){%>
@@ -89,10 +96,10 @@
 
                  
            
-                 <a href="/SitemaDeActivos/presentation/funcionario/delete?numFun=<%=model.getId()%>" class="btn btn-danger">ELIMINAR</a>
-                      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
+               
+                    
                   
-                  <a href="/SitemaDeActivos/presentation/funcionario/update?numFun=<%=model.getId()%>" class="btn btn-success">ACTUALIZAR</a>
+                  
       
                  </div>
                

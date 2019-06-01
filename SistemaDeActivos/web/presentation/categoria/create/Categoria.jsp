@@ -28,13 +28,13 @@
             <h3 style="text-align: center">Registrar Categoria</h3> 
             <div class="jumbotron">
 
-                <form method="POST" name="formulario" id="formulario" action="/SistemaDeActivos/presentation/create/categoria">
+                <form method="POST" name="formulario" id="formulario" action="<%=model==null?"/SistemaDeActivos/presentation/create/categoria":"/SistemaDeActivos/presentation/categoria/update?numCate="+model.getCategoria() %>">
 
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
                                 <label >Numero de Categoria</label>
-                                <input type="text" class="form-control" id="id"  name="idCategoria" required <% if (model != null) {%> value="<%= model.getCategoria()%>" <%}%>>
+                                <input type="text" class="form-control" id="id"  name="idCategoria" required <% if (model != null) {%> value="<%= model.getCategoria()%>" readonly<%}%>>
 
                             </div>    
                         </div>
@@ -57,21 +57,28 @@
                     </div>
                     <%}%>
                     <div style="margin-top: 50px"></div>
-                    <% if (model == null) { %>
+                    
                     <div class="row">
                         <div style="margin-left: 250px"></div>
                         <div class="col">
-
+<% if (model == null) { %>
                             <input type="submit" id="submit" class="btn btn-success" value="AGREGAR" > 
                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
                             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
                             &nbsp; &nbsp; &nbsp; &nbsp; 
                             <input type="button" id="cancelar" class="btn btn-danger" value="CANCELAR" onclick="javascript:cleanF();">
+                            
+                 <%} else{%>
+                 
+                    <a href="/SistemaDeActivos/presentation/categoria/delete?numCate=<%=model.getCategoria()%>" class="btn btn-danger">ELIMINAR</a>
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
+
+                 <input type="submit" id="submit" class="btn btn-success" value="ACTUALIZAR" >
+                 <%}%>
                         </div>
 
-
                     </div>
-                    <%}%>
+                 
                 </form>
                 <%if (editar != null) {%>
 
@@ -79,10 +86,6 @@
 
 
 
-                    <a href="/SistemaDeActivos/presentation/categoria/delete?numCate=<%=model.getCategoria()%>" class="btn btn-danger">ELIMINAR</a>
-                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
-
-                    <a href="/SistemaDeActivos/presentation/categoria/update?numCate=<%=model.getCategoria()%>" class="btn btn-success">ACTUALIZAR</a>
 
                 </div>
 

@@ -27,7 +27,7 @@
      
         </div>
        
-                    <table class="table table-hover">
+                    <table class="table table-hover"id="solTable">
                          <caption style="caption-side: top; font-size: 35px; text-align: center"><span class="badge badge-pill badge-info">Lista de Solicitudes</span></caption>
                          <% Usuario a= (Usuario) request.getSession(true).getAttribute("logged");
                          List<Solicitud> model= null;
@@ -128,6 +128,20 @@
                    <script type="text/javascript" src="css/js/jquery.js"></script>
   <script type="text/javascript" src="css/js/bootstrap.js"></script>
  <script  src="js/ajax.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.bootstrap4.min.js"></script> 
+    <%if(!us.getRol().equals("Secretaria OCCB")){%>
+     <script>
+     $(document).ready(function() {
+              $('#solTable').DataTable( {
+        scrollY:        200,
+        scrollCollapse: true,
+        paging:         false,
+        info: false
+    } );
+} );
+</script>
+<%}%>
     </body>
 </html>
 <%!String date(Date fecha){

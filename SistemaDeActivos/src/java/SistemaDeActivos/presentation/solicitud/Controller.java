@@ -43,9 +43,9 @@ LEER README EN SISTEMADEACTIVOS/README
 @WebServlet(name = "presentation.solicitud", urlPatterns = {"/presentation/solicitud/create/bien","/presentation/solicitud/list",
     "/presentation/solicitud/create/solicitud.jsp","/presentation/solicitud/create/solicitud", "/presentation/solicitud/delete/bien",
 "/presentation/solicitud/prepare", "/presentation/solicitud/consult","/presentation/solicitud/create/updatesolicitud","/presentation/solicitud/create/updatesolicitudJefe",
-"/presentation/solicitud/consultRegistrador","/presentation/solicitud/list/secretaria" ,"/presentation/solicitud/consultonly"})
+"/presentation/solicitud/consultRegistrador","/presentation/solicitud/list/secretaria" ,"/presentation/solicitud/consultonly","/presentation/solicitud/delete"})
 public class Controller extends HttpServlet {
-  Model model = new Model();
+ public static  Model model = new Model();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -81,7 +81,28 @@ public class Controller extends HttpServlet {
                     this.listSecretaria(request, response);
                      if(request.getServletPath().equals("/presentation/solicitud/consultonly"))
                     this.consultOnly(request, response);
+                      if(request.getServletPath().equals("/presentation/solicitud/delete"))
+                    this.deleteSol(request, response);
     }
+ 
+  protected void deleteSol(HttpServletRequest request, 
+                                  HttpServletResponse response)
+            throws ServletException, IOException {
+  try{
+     String num=request.getParameter("numSolElim");
+     int cod=Integer.parseInt(num);
+     Solicitud s= SistemaDeActivos.logic.Model.instance().recuperar(cod);
+     s.setEstado("Cancelada");
+     SistemaDeActivos.logic.Model.instance().actualizarSolicitud(s);
+     this.list(request, response);
+  }
+  catch(Exception e){
+     String message=e.getMessage();
+     request.getSession().setAttribute("errorBien", message);
+     request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response);
+  }
+  }
+ 
  
    protected void consultOnly(HttpServletRequest request, 
                                   HttpServletResponse response)
@@ -248,8 +269,8 @@ public class Controller extends HttpServlet {
             try {
                   Bien b= updateModel(model,request,response);
                 model.agregarB(b,b.getNumero());
-                HttpSession session=request.getSession(true);
-                session.setAttribute("Bienes", model.listar());
+                
+                request.getSession().setAttribute("Bienes", model.listar());
                   
             } catch (Exception ex) {
 //                String pru=ex.getMessage();
@@ -285,8 +306,13 @@ public class Controller extends HttpServlet {
               if(model.getBienes().isEmpty())
                  throw new Exception("Debe ingresar al menos un bien" );
               List<Bien> bienes=new ArrayList((List<Bien>)request.getSession(true).getAttribute("Bienes"));
-              Solicitud sol=model.getSolicitud();
-              for(Bien b: bienes){
+              Solicitud sol=new Solicitud();
+              sol.setComprobante(model.getSolicitud().getComprobante());
+              sol.setFecha(model.getSolicitud().getFecha());
+              sol.setTipo(model.getSolicitud().getTipo());
+              sol.setEstado(model.getSolicitud().getEstado());
+              sol.setDependencia(model.sol.getDependencia());
+              for(Bien b: model.getBienes().values()){
                  b.setSolicitud(sol);
               sol.getBiens().add(b);
               }
@@ -294,9 +320,11 @@ public class Controller extends HttpServlet {
              
                       bienes.clear();
               // model.getBienes().clear();
+              model.clear();
                request.getSession(true).setAttribute("Bienes", bienes);
                   List<Solicitud> lista= SistemaDeActivos.logic.Model.instance().recuperarSolicitudes();
                   this.prueba();
+                  
                 request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response); 
              }
              catch(Exception e){
@@ -310,9 +338,9 @@ public class Controller extends HttpServlet {
                  else
                      error="Por favor Digite un numero";
                  
-                 request.setAttribute("modelSolicitud",model.sol);
-                 request.setAttribute("errorSolicitud", error);
-                 request.setAttribute("date", model.fecha);
+                 request.getSession().setAttribute("modelSolicitud",model.sol);
+                 request.getSession().setAttribute("errorSolicitud", error);
+                 request.getSession().setAttribute("date", model.fecha);
                   request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response); 
              }
              
@@ -439,14 +467,13 @@ public class Controller extends HttpServlet {
          for(Bien b:listav2){
              try {
                 model.agregarB(b,b.getNumero());
-                HttpSession session=request.getSession(true);
-                session.setAttribute("Bienes", model.listar());
+               request.getSession().setAttribute("Bienes", model.listar());
                  
             } catch (Exception ex) {      
             }
          }
          
-         request.setAttribute("modelSolicitud",model.sol);
+         request.getSession().setAttribute("modelSolicitud",model.sol);
           request.getSession().setAttribute("updateSol", model.sol);
          request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response);
         

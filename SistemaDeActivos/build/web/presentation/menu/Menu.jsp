@@ -36,7 +36,7 @@
            Este Sistema permite la gestion de activos.
            
            <br>
-           Por favor inicie sesion
+          
           </p>
     </div>
 </div>

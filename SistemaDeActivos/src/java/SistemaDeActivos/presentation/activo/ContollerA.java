@@ -8,6 +8,7 @@ package SistemaDeActivos.presentation.activo;
 import SistemaDeActivos.logic.Activo;
 import SistemaDeActivos.logic.Bien;
 import SistemaDeActivos.logic.Categoria;
+import SistemaDeActivos.logic.Dependencia;
 import SistemaDeActivos.logic.Funcionario;
 import SistemaDeActivos.logic.Solicitud;
 import java.io.IOException;
@@ -128,8 +129,19 @@ public class ContollerA extends HttpServlet {
                     Solicitud sol = (Solicitud) request.getSession().getAttribute("SolXFinalizar");
                     int num= Integer.parseInt(request.getParameter("ultActivoNum"));
                     Activo a= SistemaDeActivos.logic.Model.instance().recuperarActivo(num);
-                    a.setDependencia(sol.getDependencia());
-                    Funcionario f= SistemaDeActivos.logic.Model.instance().getFuncionario(request.getParameter("funcionarioResponsable"));
+                     String aux=request.getParameter("dependenciaFin");
+                    if(aux.equals("Por favor agregue una dependencia")){
+                        throw new Exception("Por favor agregue una dependencia");
+                    }
+                    int cod=Integer.parseInt(aux);
+                    
+                   Dependencia dep=SistemaDeActivos.logic.Model.instance().recuperarDependencia(cod);
+                    a.setDependencia(dep);
+                    String id=request.getParameter("funcionariosFin");
+                    if(id.equals("Sin funcionario")){
+                        throw new Exception("Por Favor agregue un funcionario");
+                    }
+                    Funcionario f=SistemaDeActivos.logic.Model.instance().getFuncionario(id);
                     a.setFuncionario(f);
                     a.setPuesto(request.getParameter("puestoActivo"));
                     SistemaDeActivos.logic.Model.instance().actualizarActivo(a);
@@ -154,8 +166,20 @@ public class ContollerA extends HttpServlet {
                     Solicitud sol = (Solicitud) request.getSession().getAttribute("SolXFinalizar");
                     int num= Integer.parseInt(request.getParameter("activoNum"));
                     Activo a= SistemaDeActivos.logic.Model.instance().recuperarActivo(num);
-                    a.setDependencia(sol.getDependencia());
-                    Funcionario f= SistemaDeActivos.logic.Model.instance().getFuncionario(request.getParameter("funcionarioResponsable"));
+                    
+                    String aux=request.getParameter("dependenciaFin");
+                    if(aux.equals("Por favor agregue una dependencia")){
+                        throw new Exception("Por favor agregue una dependencia");
+                    }
+                    int cod=Integer.parseInt(aux);
+                    
+                   Dependencia dep=SistemaDeActivos.logic.Model.instance().recuperarDependencia(cod);
+                    a.setDependencia(dep);
+                    String id=request.getParameter("funcionariosFin");
+                    if(id.equals("Sin funcionario")){
+                        throw new Exception("Por Favor agregue un funcionario");
+                    }
+                    Funcionario f=SistemaDeActivos.logic.Model.instance().getFuncionario(id);
                     a.setFuncionario(f);
                     a.setPuesto(request.getParameter("puestoActivo"));
                     SistemaDeActivos.logic.Model.instance().actualizarActivo(a);
@@ -184,10 +208,12 @@ public class ContollerA extends HttpServlet {
               String num=request.getParameter("numeroSolRo");
               Solicitud s= SistemaDeActivos.logic.Model.instance().recuperar(Integer.parseInt(num));
               request.getSession().setAttribute("SolXFinalizar", s);
-              List<Activo> activos = new ArrayList(); 
+              List<Activo> activos = new ArrayList();
+              
               for(Bien b:  s.getBiens()){
                   Bien b2=SistemaDeActivos.logic.Model.instance().recuperarBien(b.getNumero());
-                  for(Activo a: b2.getActivos()){
+                  List<Activo> aux= SistemaDeActivos.logic.Model.instance().recuperarActivosXBien(b2.getNumero());
+                  for(Activo a: aux){
                       activos.add(a);
                   }
               }

@@ -219,7 +219,8 @@ public class Model {
         return query.list();
     }
                        public List<Solicitud> recuperarSolicitudXNumero(int num) {
-        Query query = ses.createQuery("from Solicitud s where s.numero like :numero");
+        Query query = ses.createQuery("from Solicitud s where s.numero like :numero and (s.estado= 'En espera de aprobacion' or"
+                + "   s.estado='Rechazada' or s.estado='Rechazada')");
         query.setInteger("numero", num);
         return query.list();
     }
@@ -314,6 +315,12 @@ public class Model {
                  
              }
              return null;
+         }
+         
+         public List<Activo> recuperarActivosXBien(int num){
+         Query query = ses.createQuery("from Activo a where a.bien= :num");
+         query.setInteger("num", num);
+        return query.list();
          }
            public Categoria recuperarCategoria(int num){
              try{

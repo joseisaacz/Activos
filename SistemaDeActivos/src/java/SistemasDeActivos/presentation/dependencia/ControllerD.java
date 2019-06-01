@@ -38,9 +38,9 @@ Model model=new Model();
                                   HttpServletResponse response)
             throws ServletException, IOException, Exception {
      String a= request.getServletPath();
-            if (request.getServletPath().equals("/presentation/solicitud/create/dependencia"))
+            if (request.getServletPath().equals("/presentation/create/dependencia"))
                 this.create(request, response);
-               if (request.getServletPath().equals("/presentation/dependencia/consult"))
+              if (request.getServletPath().equals("/presentation/dependencia/consult"))
                 this.consult(request, response);
                if (request.getServletPath().equals("/presentation/dependencia/delete"))
                 this.delete(request, response);
@@ -53,8 +53,19 @@ Model model=new Model();
                                   HttpServletResponse response)
             throws ServletException, IOException, Exception {
       try{
-            this.updateModel(request, response);
-            SistemaDeActivos.logic.Model.instance().actualizarDependencia(model.d);
+         
+            String id= request.getParameter("codDepen");
+            int cod=Integer.parseInt(id);
+             String nombre= request.getParameter("nombreDependencia");
+   String funcionario = request.getParameter("FuncDepen");
+   Funcionario f= SistemaDeActivos.logic.Model.instance().getFuncionario(funcionario);
+   model.d.setNombre(nombre);
+   model.d.setFuncionario(f);
+            Dependencia dep=SistemaDeActivos.logic.Model.instance().recuperarDependencia(cod);
+            dep.setCodigo(cod);
+            dep.setNombre(model.d.getNombre());
+            dep.setFuncionario(model.d.getFuncionario());
+            SistemaDeActivos.logic.Model.instance().actualizarDependencia(dep);
             this.list(request, response);
       }
       
@@ -92,7 +103,8 @@ Model model=new Model();
             throws ServletException, IOException, Exception {
      try{
          String id= request.getParameter("codDepen");
-         Dependencia fun= SistemaDeActivos.logic.Model.instance().recuperarDependencia(Integer.parseInt(id));
+         int cod=Integer.parseInt(id);
+         Dependencia fun= SistemaDeActivos.logic.Model.instance().recuperarDependencia(cod);
          if(fun != null)
              model.d=fun;
          
@@ -102,6 +114,7 @@ Model model=new Model();
           request.getRequestDispatcher("/presentation/dependencia/create/Dependencia.jsp").forward( request, response); 
      }
      catch(Exception e){
+         String error=e.getMessage();
          
      }
  }
@@ -111,16 +124,19 @@ Model model=new Model();
             throws ServletException, IOException, Exception {
  
      try{
-     this.updateModel(request, response);
-     SistemaDeActivos.logic.Model.instance().agregarDependencia(model.d);
+     Dependencia d=this.updateModel(request, response);
+     SistemaDeActivos.logic.Model.instance().agregarDependencia(d);
+     this.list(request, response);
      
      }
      catch(Exception e){
-         
+          String errorDependencia="ERROR! POR FAVOR REVISE LOS DATOS";
+      request.getSession().setAttribute("errorDependencia", errorDependencia);
+       request.getRequestDispatcher("/presentation/dependencia/create/Dependencia.jsp").forward( request, response); 
      }
  }
  
-protected void updateModel(HttpServletRequest request, 
+protected Dependencia updateModel(HttpServletRequest request, 
                                   HttpServletResponse response)
             throws ServletException, IOException, Exception { 
     try{
@@ -135,7 +151,11 @@ protected void updateModel(HttpServletRequest request,
   model.d.setCodigo(Integer.parseInt(id));
   model.d.setNombre(nombre);
   model.d.setFuncionario(f);
-   
+   Dependencia d= new Dependencia();
+   d.setCodigo(model.d.getCodigo());
+   d.setNombre(model.d.getNombre());
+   d.setFuncionario(model.d.getFuncionario());
+   return d;
     }
     catch(Exception e){
         throw new Exception(e.getMessage());

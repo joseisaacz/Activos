@@ -21,7 +21,7 @@
     </head>
    <body>
         <% String editar= (String) request.getSession().getAttribute("editarDependencia"); 
-           Dependencia model=(Dependencia) request.getSession().getAttribute("DependenciaFuncionario");
+           Dependencia model=(Dependencia) request.getSession().getAttribute("modelDependencia");
         %>
          <div style="margin-top: 100px"></div>
          <div class="container">
@@ -29,13 +29,13 @@
          <h3 style="text-align: center">Registrar Dependencia</h3> 
         <div class="jumbotron">
            
-        <form method="POST" name="formulario" id="formulario" action="SistemaDeActivos/presentation/create/funcionario">
+        <form method="POST" name="formulario" id="formulario" action="<%=model==null?"/SistemaDeActivos/presentation/create/dependencia":"/SistemaDeActivos/presentation/dependencia/update?codDepen="+model.getCodigo() %>">
             
             <div class="row">
                 <div class="col">
                     <div class="form-group">
                             <label >Codigo de Dependencia</label>
-                            <input type="text" class="form-control" id="id"  name="codigoDependencia" required <% if(model!=null){%> value="<%= model.getId() %>" <%}%>>
+                            <input type="text" class="form-control" id="id"  name="codigoDependencia1" required <% if(model!=null){%> value="<%= model.getCodigo() %>" disabled<%}%>>
                             
                         </div>    
                 </div>
@@ -57,7 +57,7 @@
                       <% if(list != null){ %>
                       
                            <%for(Funcionario d : list){ %>
-                           <option value="<%= d.getId() %>" <%if(d.getId().equals(model.getFuncionario().getId())){ %> selected <%} %>><%= d.getNombre() %></option>
+                           <option value="<%= d.getId() %>" <%if(model!=null && d!=null && model.getFuncionario()!=null){if(d.getId().equals(model.getFuncionario().getId())){ %> selected <%}} %>><%= d.getNombre() %></option>
                            <%} %>
  
                       <% }  else{  %>
@@ -73,7 +73,7 @@
                  <div style="margin-left: 250px"></div>
                 <div class="col">
                    
-                    <input type="submit" id="submit" class="btn btn-success" value="AGREGAR" > 
+                    
                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
                     &nbsp; &nbsp; &nbsp; &nbsp; 
@@ -82,6 +82,14 @@
          
                  
                 </div>
+            <%} else{%>
+            
+            <input type="submit" id="submit" class="btn btn-success" value="Actualizar" > 
+             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
+                  <a href="/SistemaDeActivos/presentation/dependencia/delete?codDepen=<%=model.getCodigo() %>" class="btn btn-danger">ELIMINAR</a>
+                      
+                  
+                 
             <%}%>
         </form>
              <%if(editar != null){%>
@@ -90,10 +98,7 @@
 
                  
            
-                 <a href="/SitemaDeActivos/presentation/dependencia/delete?codDepen=<%=model.getCodigo() %>" class="btn btn-danger">ELIMINAR</a>
-                      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
-                  
-                  <a href="/SitemaDeActivos/presentation/funcionario/update?codDepen=<%=model.getCodigo()%>" class="btn btn-success">ACTUALIZAR</a>
+           
       
                  </div>
                
@@ -101,7 +106,7 @@
             <% } %>     
         </div>
              </div>
-             <% String error= (String) request.getSession().getAttribute("errorFuncionario");
+             <% String error= (String) request.getSession().getAttribute("errorDependencia");
                                 if( error!= null) { %>
             
               
@@ -110,7 +115,7 @@
           <%=error %>
         </Medium>      
       </div>
-          <%  request.getSession().setAttribute("errorFuncionario", null); } %>
+          <%  request.getSession().setAttribute("errorDependencia", null); } %>
          <div >
                          <%@ include file="/presentation/bottomheader.jsp" %>  
                     </div>
@@ -118,8 +123,8 @@
          <script  src="css/js/bootstrap.js"></script>
  <script  src="js/ajax.js"></script>
  
-  <%  request.getSession().setAttribute("editarFuncionario",null);
-      request.getSession().setAttribute("modelFuncionario",null);  
+  <%  request.getSession().setAttribute("editarDependencia",null);
+      request.getSession().setAttribute("modelDependencia",null);  
   %>
     </body>
 </html>

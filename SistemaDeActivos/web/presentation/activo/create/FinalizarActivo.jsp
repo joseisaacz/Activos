@@ -4,6 +4,8 @@
     Author     : admin
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="SistemaDeActivos.logic.Dependencia"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="java.util.Collections"%>
 <%@page import="SistemaDeActivos.logic.Funcionario"%>
@@ -25,7 +27,9 @@
             List<Activo> activos = (List<Activo>) request.getSession().getAttribute("totalActivos");
             Activo act = null;
             if (activos != null) {
+                if(!activos.isEmpty()){
                 act = activos.get(0);
+                }
             }
         %>
         <div class="container">
@@ -80,40 +84,41 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
-                                <label >Funcionario Responsable del Activo</label>
-                                <% List<Funcionario> funcionarios
-                                            = SistemaDeActivos.logic.Model.instance().recuperarFuncionariosXDependencias(sol.getDependencia().getCodigo());
-                                %>
-                                <select class="form-control" name="funcionarioResponsable">
-                                    <%  if (!funcionarios.isEmpty()) {
-                                            for (Funcionario f : funcionarios) {
-                                    %>
-                                    <option value="<%=f.getId()%>"><%=f.getNombre()%></option>
-                                    <% }
-                                } else {%>
-                                    <option value="N/F">
-                                        Registre un funcionario en la dependencia
-                                    </option>
-                                    <%}%>
-                                </select>
+                                 <label >Dependencia al que  va el Activo</label>
+                                 <% List<Dependencia> dependencias= SistemaDeActivos.logic.Model.instance().recuperarDependencias();
+                                     %>
+                                     <select id="dependencia" name="dependenciaFin" class="form-control">
+                                         <option value='Sin escoger'>Por Favor Seleccione una opcion</option>
+                                         <%if(dependencias !=null){
+                                             if(!dependencias.isEmpty()){
+                                                 for(Dependencia d: dependencias){%>
+                                                 <option value="<%=d.getCodigo()%>"><%=d.getNombre()%> </option>
+                                       <%  }}else{%>
+                                        <option value="Por favor agregue una dependencia">Por favor agregue una dependencia</option>
+                                                   <% }}%>
+                                       
+                                     </select>
+                              
                             </div>    
                         </div>
+                        <div class="col">
+                            <div class="form-group">
+                             <label >Funcionario Responsable del Activo</label>
+                                <select id="funcionarios" class="form-control" name="funcionariosFin">
+                                    
+                                </select>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                    <div class="row">
                         <div class="col">
                             <div class="form-group">
                                 <label >Puesto</label>
                                 <input type="text" class="form-control" name="puestoActivo" required>
 
                             </div>    
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label >Dependencia</label>
-                                <input type="text" class="form-control" name="dependenciaActivo" value="<%= sol.getDependencia().getNombre()%>"  readonly>
-
-                            </div>   
                         </div>
 
                         <div class="col">
@@ -135,8 +140,8 @@
 
                                             <!-- Modal body -->
                                             <div class="modal-body">
-                                                <% String a= act.getBien().getNumero()+act.getCodigo()+act.getCategoria().getDescripcion();
-                                                    String result=shuffleString(a);
+                                                <%
+                                                    String result=act.getCategoria().getDescripcion() + act.getConsecutivo();
                                                 %>
                                                 <div style="margin-left: 100px">
                                                     <img id="barcode2"/>
@@ -190,13 +195,13 @@
                     </div>
 
                 </form>
-                        <% String error= (String) request.getSession().getAttribute("errorFinalizarActivo");
-                                if( error!= null) { %>
+                           <% String error= String.valueOf(request.getSession().getAttribute("errorFinalizarActivo"));
+                                if( !error.equals("null")) { %>
             
               
         <div class="container">
         <Medium id="Error" class="text-danger">
-          <%=error %>
+            <%=error%>
         </Medium>      
       </div>
           <%  request.getSession().setAttribute("errorFinalizarActivo", null); } %>
@@ -205,7 +210,56 @@
         <script type="text/javascript" src="css/js/jquery.js"></script>
         <script type="text/javascript" src="css/js/bootstrap.js"></script>
         <script  src="js/ajax.js"></script>
+        <script>
+            
+ jQuery.noConflict()(function ($) {
+
+$(document).ready(function () {
+           //console.log($("#dependencia").val());
+           //console.log($(this));
+           var depe=document.getElementById("dependencia");
+       
+    $("#dependencia").on('change',function () {
         
+       
+        var val = $(this).val();
+         var v2=Number(val); 
+        console.log(v2);
+        <%List<Dependencia> dep=SistemaDeActivos.logic.Model.instance().recuperarDependencias();
+           List<Integer> id=new ArrayList();
+           for(Dependencia d: dep){
+               id.add(d.getCodigo());
+           }
+           //Integer array[]=(Integer[])id.toArray();
+           
+        %>
+         <%for(int i=0; i<id.size(); i++){ %>
+        if (v2 ==<%=id.get(i) %>) {
+        <% int cod=id.get(i);
+             List<Funcionario> funcionarios=SistemaDeActivos.logic.Model.instance().recuperarFuncionariosXDependencias(cod); %>   
+            $("#funcionarios").html(
+                    <%if(funcionarios.size()==0){%>
+                        "<option value='Sin funcionario'>Por Favor agregue un funcionario</option>"
+                        <%}%>
+             <%for(int j=0;j<funcionarios.size(); j++){%>
+             
+                    <%if(j==funcionarios.size()-1) {%>
+                    "<option value='<%=funcionarios.get(j).getId()%>'><%=funcionarios.get(j).getNombre()%></option>"
+                                    
+                    <%}else{%>
+                    "<option value='<%=funcionarios.get(j).getId()%>'><%=funcionarios.get(j).getNombre()%></option>"+
+                        <%}%>
+                   <%}%>     
+                );
+        } 
+        <%}%>
+    
+    });
+        
+});
+});
+
+            </script>
         <%! 
        String shuffleString(String string)
 {

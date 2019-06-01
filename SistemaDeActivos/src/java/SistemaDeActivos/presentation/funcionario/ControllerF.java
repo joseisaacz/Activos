@@ -38,7 +38,7 @@ public class ControllerF extends HttpServlet {
                                   HttpServletResponse response)
             throws ServletException, IOException, Exception {
      String a= request.getServletPath();
-            if (request.getServletPath().equals("/presentation/solicitud/create/bien"))
+            if (request.getServletPath().equals("/presentation/create/funcionario"))
                 this.create(request, response);
                if (request.getServletPath().equals("/presentation/funcionario/consult"))
                 this.consult(request, response);
@@ -54,7 +54,13 @@ public class ControllerF extends HttpServlet {
             throws ServletException, IOException, Exception {
       try{
             this.updateModel(request, response);
-            SistemaDeActivos.logic.Model.instance().actualizarFuncionario(model.f);
+           
+            String id=request.getParameter("numFun");
+             Funcionario faux=SistemaDeActivos.logic.Model.instance().getFuncionario(id);
+             faux.setId(id);
+            faux.setNombre(model.f.getNombre());
+            faux.setDependencia(model.f.getDependencia());
+            SistemaDeActivos.logic.Model.instance().actualizarFuncionario(faux);
             this.list(request, response);
       }
       
@@ -111,16 +117,16 @@ public class ControllerF extends HttpServlet {
             throws ServletException, IOException, Exception {
  
      try{
-     this.updateModel(request, response);
-     SistemaDeActivos.logic.Model.instance().agregarFuncionario(model.f);
-     
+     Funcionario f=this.updateModel(request, response);
+     SistemaDeActivos.logic.Model.instance().agregarFuncionario(f);
+     this.list(request, response);
      }
      catch(Exception e){
          
      }
  }
  
-protected void updateModel(HttpServletRequest request, 
+protected Funcionario updateModel(HttpServletRequest request, 
                                   HttpServletResponse response)
             throws ServletException, IOException, Exception { 
     try{
@@ -135,12 +141,17 @@ protected void updateModel(HttpServletRequest request,
     model.f.setId(id);
     model.f.setNombre(nombre);
     model.f.setDependencia(depe);
-   
+    Funcionario f= new Funcionario();
+    f.setId(model.f.getId());
+    f.setNombre(model.f.getNombre());
+    f.setDependencia(model.f.getDependencia());
+    return f;
    
     }
     catch(Exception e){
-        
+        throw new Exception("ERROR");
     }
+    
 }
  // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

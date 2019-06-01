@@ -19,10 +19,10 @@
     </head>
     <body>
    <%  List<Dependencia> dependencias = SistemaDeActivos.logic.Model.instance().recuperarDependencias(); %>
-        <div style="margin-top: 100px"></div>
+        <div style="margin-top: 75px"></div>
         <div class="container">
-             <table class="table table-hover">
-                         <caption style="caption-side: top; font-size: 35px; text-align: center"><span class="badge badge-pill badge-info">Lista de Funcionarios</span></caption>
+             <table class="table table-hover" id="depTable" >
+                         <caption style="caption-side: top; font-size: 35px; text-align: center"><span class="badge badge-pill badge-info">Lista de Dependencias</span></caption>
            <thead>
       <tr>
           <th style="text-align: center">Codigo</th>
@@ -39,7 +39,7 @@
           if(dependencias.size() > 0 ){
           for( Dependencia  s:  dependencias){ %>
                             <tr>
-      <td style="text-align: center"><a href="/SistemaDeActivos/presentation/funcionario/consult?codDepen=<%=s.getCodigo() %>"><%=s.getCodigo() %></a> </td>                     
+      <td style="text-align: center"><a href="/SistemaDeActivos/presentation/dependencia/consult?codDepen=<%=s.getCodigo() %>"><%=s.getCodigo() %></a> </td>                     
       <td style="text-align: center"><%= s.getNombre() %></td>
       <td style="text-align: center"><%= s.getFuncionario()!=null?s.getFuncionario().getNombre() :"No Asignado"  %></td>                         
                             </tr>
@@ -63,5 +63,12 @@
                                    <script type="text/javascript" src="css/js/jquery.js"></script>
   <script type="text/javascript" src="css/js/bootstrap.js"></script>
  <script  src="js/ajax.js"></script>  
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.bootstrap4.min.js"></script> 
+         <script>
+     $(document).ready(function() {
+    $('#depTable').DataTable();
+} );
+     </script>
     </body>
 </html>

@@ -19,9 +19,20 @@
     </head>
     <body>
        <%  List<Categoria> categorias = SistemaDeActivos.logic.Model.instance().recuperarCategorias(); %>
-        <div style="margin-top: 100px"></div>
+        <div style="margin-top: 75px"></div>
         <div class="container">
-             <table class="table table-hover">
+             <% String error = (String) request.getSession().getAttribute("errorCategoria");
+                 if (error != null) {%>
+
+
+        <div class="container">
+            <Medium id="Error" class="text-danger">
+                <%=error%>
+            </Medium>      
+        </div>
+        <%  request.getSession().setAttribute("errorCategoria", null);
+              } %>
+             <table class="table table-hover" id="catTable">
                          <caption style="caption-side: top; font-size: 35px; text-align: center"><span class="badge badge-pill badge-info">Lista de Categorias</span></caption>
            <thead>
       <tr>
@@ -62,6 +73,19 @@
                     
                                    <script type="text/javascript" src="css/js/jquery.js"></script>
   <script type="text/javascript" src="css/js/bootstrap.js"></script>
- <script  src="js/ajax.js"></script>     
+ <script  src="js/ajax.js"></script>    
+    <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.bootstrap4.min.js"></script> 
+     <script>
+   
+     $(document).ready(function() {
+              $('#catTable').DataTable( {
+        scrollY:        200,
+        scrollCollapse: true,
+        paging:         false,
+        info: false
+    } );
+} );
+     </script>
     </body>
 </html>

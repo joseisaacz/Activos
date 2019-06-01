@@ -52,13 +52,21 @@ Model model=new Model();
                                   HttpServletResponse response)
             throws ServletException, IOException, Exception {
       try{
-            this.updateModel(request, response);
-            SistemaDeActivos.logic.Model.instance().actualizarCategoria(model.c);
+//            this.updateModel(request, response);
+            String id=request.getParameter("numCate");
+            int cod=Integer.parseInt(id);
+            Categoria c=SistemaDeActivos.logic.Model.instance().recuperarCategoria(cod);
+            String nombre=request.getParameter("nombreCategoria");
+            model.c.setConsecutivo(c.getConsecutivo());
+            model.c.setDescripcion(nombre);
+            model.c.setCategoria(c.getCategoria());
+            c.setDescripcion(nombre);
+            SistemaDeActivos.logic.Model.instance().actualizarCategoria(c);
             this.list(request, response);
       }
       
       catch(Exception e){
-           String errorFuncionario=e.getMessage();
+           String errorFuncionario="ERROR. Por favor intente de nuevo";
       request.getSession().setAttribute("errorCategoria", errorFuncionario);
        request.getRequestDispatcher("/presentation/categoria/create/Categoria.jsp").forward( request, response); 
       }
@@ -66,7 +74,12 @@ Model model=new Model();
   protected void list(HttpServletRequest request, 
                                   HttpServletResponse response)
             throws ServletException, IOException, Exception {
+      try{
    request.getRequestDispatcher("/presentation/categoria/list/listCategorias.jsp").forward( request, response); 
+      }
+      catch(Exception e){
+          throw new Exception();
+      }
   }
 
  
@@ -80,7 +93,7 @@ Model model=new Model();
       this.list(request, response);
   }
   catch(Exception e){
-      String errorFuncionario=e.getMessage();
+      String errorFuncionario="ERROR. Por favor intente de nuevo";
       request.getSession().setAttribute("errorCategoria", errorFuncionario);
        request.getRequestDispatcher("/presentation/categoria/create/Categoria.jsp").forward( request, response); 
       
@@ -102,8 +115,9 @@ Model model=new Model();
           request.getRequestDispatcher("/presentation/categoria/create/Categoria.jsp").forward( request, response); 
      }
      catch(Exception e){
-         String error=e.getMessage();
-         int a=0;
+          String errorFuncionario="ERROR. Por favor intente de nuevo";
+      request.getSession().setAttribute("errorCategoria", errorFuncionario);
+       request.getRequestDispatcher("/presentation/categoria/list/listCategorias.jsp").forward( request, response);
      }
  }
  
@@ -112,16 +126,20 @@ Model model=new Model();
             throws ServletException, IOException, Exception {
  
      try{
-     this.updateModel(request, response);
-     SistemaDeActivos.logic.Model.instance().agregarCategoria(model.c);
-     request.getRequestDispatcher("/presentation/categoria/create/Categoria.jsp").forward( request, response);
+     
+     Categoria cat=this.updateModel(request, response);
+     SistemaDeActivos.logic.Model.instance().agregarCategoria(cat);
+     this.list(request, response);
      }
      catch(Exception e){
+         String error="ERROR! Por favor revise los datos";
+         request.getSession().setAttribute("errorCategoria", e);
+         request.getRequestDispatcher("/presentation/categoria/create/Categoria.jsp").forward( request, response);
          
      }
  }
  
-protected void updateModel(HttpServletRequest request, 
+protected Categoria updateModel(HttpServletRequest request, 
                                   HttpServletResponse response)
             throws ServletException, IOException, Exception { 
     try{
@@ -137,12 +155,16 @@ protected void updateModel(HttpServletRequest request,
    model.c.setCategoria(Integer.parseInt(categoria));
    model.c.setDescripcion(nombre);
    
-   
-   
+   Categoria cat=new Categoria();
+   cat.setCategoria(model.c.getCategoria());
+   cat.setDescripcion(model.c.getDescripcion());
+   cat.setConsecutivo(model.c.getConsecutivo());
+   return cat;
     }
     catch(Exception e){
-        String error=e.getMessage();
+       throw new Exception();
     }
+    
 }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

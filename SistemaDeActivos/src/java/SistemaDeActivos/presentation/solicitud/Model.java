@@ -34,7 +34,9 @@ public class Model {
        bienes.put(num, b);
        
    }
-   
+   public void clear(){
+       bienes.clear();
+   }
     public void agregarB(Bien b,int num){
        bienes.put(num, b);
        

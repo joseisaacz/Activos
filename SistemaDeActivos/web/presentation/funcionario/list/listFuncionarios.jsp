@@ -18,9 +18,9 @@
     </head>
     <body>
         <% List<Funcionario> funcionarios = SistemaDeActivos.logic.Model.instance().recuperarFuncionarios(); %>
-        <div style="margin-top: 100px"></div>
+        <div style="margin-top: 75px"></div>
         <div class="container">
-             <table class="table table-hover">
+             <table class="table table-striped table-bordered" id="funTable">
                          <caption style="caption-side: top; font-size: 35px; text-align: center"><span class="badge badge-pill badge-info">Lista de Funcionarios</span></caption>
            <thead>
       <tr>
@@ -54,15 +54,22 @@
         
         
         
-          <div >
+          <div  style="padding-bottom: 50px">
                          <%@ include file="/presentation/bottomheader.jsp" %>  
                     </div>
                     
                     
                                    <script type="text/javascript" src="css/js/jquery.js"></script>
+                                
+                                   <script src="js/jquery.dataTables.min.js"></script>
+                                   <script src="js/dataTables.bootstrap4.min.js"></script>
   <script type="text/javascript" src="css/js/bootstrap.js"></script>
  <script  src="js/ajax.js"></script>  
-                    
+ <script>
+     $(document).ready(function() {
+    $('#funTable').DataTable();
+} );
+     </script>
                     
     </body>
 </html>

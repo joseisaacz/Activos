@@ -99,9 +99,11 @@ public class Controller extends HttpServlet {
 
     protected void logout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            HttpSession session = request.getSession(true);
-            session.removeAttribute("logged");
-            session.invalidate();
+            request.getSession().removeAttribute("logged");
+            request.getSession().invalidate();
+           if(SistemaDeActivos.presentation.solicitud.Controller.model != null){
+               SistemaDeActivos.presentation.solicitud.Controller.model.clear();
+           }
             request.getRequestDispatcher("/presentation/usuarios/login/prepareLogin").forward( request, response); 
     }           
 

@@ -44,7 +44,7 @@
                           
 
                         
-                        <% Solicitud sol=(Solicitud) request.getAttribute("modelSolicitud");%>
+                        <% Solicitud sol=(Solicitud) request.getSession().getAttribute("modelSolicitud");%>
                         <div class="row">
                             
                          
@@ -60,7 +60,7 @@
                             <div class="col">
                                  <div class="form-group">
                             <label >Fecha</label>
-                            <% String date=(String)request.getAttribute("date"); %>
+                            <% String date=(String)request.getSession().getAttribute("date"); %>
                             <input type="date" class="form-control" name="fecha" required  <% if(sol!=null){ %> value="<%=sol.getFecha()%>"  disabled<%} %> > <!--value="<%= date!=null ? date: null %>"-->
                             
                         </div>
@@ -138,7 +138,7 @@
                                                                      
  
                             <div class="col-sm-4">
-                                <%String errorSolicitud=(String)request.getAttribute("errorSolicitud"); %>
+                                <%String errorSolicitud=(String)request.getSession().getAttribute("errorSolicitud"); %>
                                 <% if(errorSolicitud!=null){%>
                                 <div class="container">
                        <Medium id="Error" class="text-danger">
@@ -148,10 +148,18 @@
                        <div style="padding-top: 10px">
                          </div>
                              <%  } %>
+                             <div style="padding-left:600px">
                              <% if(us.getRol().equals("Administrador")){%>
                                     <input type="submit" id="submit" class="btn btn-success" value="AGREGAR SOLICITUD" <% if(sol!=null){ %> disabled<%} %>>
-                                    <%} 
-                                     else if(us.getRol().equals("Secretaria OCCB")){
+                                    <%}if(sol!=null){
+                                    if(sol.getEstado().equals("Enviado al Sistema")&&us.getRol().equals("Administrador")){%>
+                                    <div style="padding-right: 100px;padding-left: 200px;padding-top: 1px;margin-top: -40px;">
+                             <a href="/SistemaDeActivos/presentation/solicitud/delete?numSolElim=<%=sol.getNumero()%>" class="btn btn-danger">ELIMINAR</a>
+                                    </div>
+                                        <%                                }
+                                                                                       }
+ 
+                                     if(us.getRol().equals("Secretaria OCCB")){
                       
                                     %>
                                      <input type="submit" id="submit" class="btn btn-success" value="ACTUALIZAR SOLICITUD"<%if(edit != null){ %> disabled<%} %>><%  }
@@ -159,6 +167,7 @@
                                      %> 
                    
                                       <input type="submit" id="submit" class="btn btn-success" value="ACTUALIZAR SOLICITUD" ><%}%>
+                             </div>
                                 </div>
                        
                         
@@ -210,7 +219,7 @@
      <div style="padding-bottom: 30px">
                     </div>
      <div class="col-sm">
-           <%String errorBien=(String)request.getAttribute("errorBien"); %>
+           <%String errorBien=(String)request.getSession().getAttribute("errorBien"); %>
                                 <% if(errorBien!=null){%>
                                 <div class="container">
                        <Medium id="Error" class="text-danger">
@@ -219,7 +228,8 @@
                        </div>
                        <div style="padding-top: 10px">
                          </div>
-                             <%  } %>
+                             <%  }
+                              request.getSession().setAttribute("errorBien", null);              %>
                   <input type="submit" id="submit" class="btn btn-success" value="AGREGAR BIEN" <% if(sol!=null){ %> disabled<%} %> >
      </div>
   
@@ -234,11 +244,11 @@
            
          
             <div class="row">
-                <table class="table table-striped">
+                <table class="table table-striped" id="bienTable">
                     <% List<Bien> model;
-                        if( request.getSession(true).getAttribute("Bienes")!=null){
+                        if( request.getSession().getAttribute("Bienes")!=null){
                         
-                        model=(List<Bien>) request.getSession(true).getAttribute("Bienes");
+                        model=(List<Bien>) request.getSession().getAttribute("Bienes");
                     }
                     else{
                        model= new ArrayList();  
@@ -295,6 +305,18 @@
               <script type="text/javascript" src="css/js/jquery.js"></script>
   <script type="text/javascript" src="css/js/bootstrap.js"></script>
  <script  src="js/ajax.js"></script>
+     <script src="js/jquery.dataTables.min.js"></script>
+    <script src="js/dataTables.bootstrap4.min.js"></script> 
+     <script>
+     $(document).ready(function() {
+              $('#bienTable').DataTable( {
+        scrollY:        200,
+        scrollCollapse: true,
+        paging:         false,
+        info: false
+    } );
+} );
+     </script>
     </body>
     
           

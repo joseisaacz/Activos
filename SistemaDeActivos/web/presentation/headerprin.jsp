@@ -102,7 +102,7 @@
                         
                         
                         <%}%>
-                        <%if(us.getRol().equals("Jefe RRHH")){ %>
+                        <%if(us.getRol().equals("Registrador")){ %>
                           <li class="nav-item dropdown">
                             <a class ="nav-link dropdown-toggle" data-toggle="dropdown" data-target="Categoria" href="">
                                      Categoria
@@ -122,7 +122,7 @@
                                      
                                    </div>
                         </li>
-                   
+                   <% }if(us.getRol().equals("Jefe RRHH")){ %>
                          <li class="nav-item dropdown">
                             <a class ="nav-link dropdown-toggle" data-toggle="dropdown" data-target="Funcionario" href="">
                                      Funcionario
