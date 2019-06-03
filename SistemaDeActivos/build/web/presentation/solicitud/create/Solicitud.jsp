@@ -44,7 +44,9 @@
                           
 
                         
-                        <% Solicitud sol=(Solicitud) request.getSession().getAttribute("modelSolicitud");%>
+                        <% Solicitud sol=(Solicitud) request.getSession().getAttribute("modelSolicitud");
+                        System.out.println("Hola");
+                        %>
                         <div class="row">
                             
                          
@@ -90,10 +92,15 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                   <label for="disabledSelect">Estado de Solicitud</label>
-                                    <select id="disabledSelect" name="estado" class="form-control" required>
+                                  <select id="disabledSelect" name="estado" class="form-control" required <%if(sol!=null && us.getRol().equals("Administrador")){%>disabled<%}%>>
                                         <%if(us.getRol().equals("Administrador")){ %>
+                                        <%if(sol != null){%>
+                                            
+                                        <option value="<%=sol.getEstado()%>"><%=sol.getEstado()%></option>
+                                                
+                                     <%}else{ %>
                                 <option value="Enviado al Sistema">Enviado al Sistema</option>
-                                <%} 
+                               <%}}
                                    else
                                     if(us.getRol().equals("Secretaria OCCB")){ %>
                                  <option value="En espera de aprobacion">En espera de Aprobacion</option>
@@ -245,7 +252,11 @@
          
             <div class="row">
                 <table class="table table-striped" id="bienTable">
-                    <% List<Bien> model;
+                    <%     List<Bien> model;
+                        if(sol!=null){
+                        model=SistemaDeActivos.logic.Model.instance().recuperarBienesXSolicitud(sol);
+                    }
+                     else
                         if( request.getSession().getAttribute("Bienes")!=null){
                         
                         model=(List<Bien>) request.getSession().getAttribute("Bienes");

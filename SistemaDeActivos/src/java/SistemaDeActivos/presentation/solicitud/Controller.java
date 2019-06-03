@@ -137,8 +137,8 @@ public class Controller extends HttpServlet {
             }
          }
          
-         request.setAttribute("modelSolicitud",model.sol);
-          request.getSession().setAttribute("updateSol", model.sol);
+         request.getSession().setAttribute("modelSolicitud",s);
+          request.getSession().setAttribute("updateSol", s);
          request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward( request, response);
         
      }catch(Exception ex){

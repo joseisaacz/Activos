@@ -67,7 +67,12 @@
     <script src="js/dataTables.bootstrap4.min.js"></script> 
          <script>
      $(document).ready(function() {
-    $('#depTable').DataTable();
+              $('#depTable').DataTable( {
+        scrollY:        200,
+        scrollCollapse: true,
+        paging:         false,
+        info: false
+    } );
 } );
      </script>
     </body>

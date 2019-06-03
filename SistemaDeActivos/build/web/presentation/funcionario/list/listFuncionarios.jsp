@@ -67,7 +67,12 @@
  <script  src="js/ajax.js"></script>  
  <script>
      $(document).ready(function() {
-    $('#funTable').DataTable();
+              $('#funTable').DataTable( {
+        scrollY:        200,
+        scrollCollapse: true,
+        paging:         false,
+        info: false
+    } );
 } );
      </script>
                     

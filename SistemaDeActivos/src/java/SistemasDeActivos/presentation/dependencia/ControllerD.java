@@ -143,12 +143,16 @@ protected Dependencia updateModel(HttpServletRequest request,
    String id= request.getParameter("codigoDependencia");
    String nombre= request.getParameter("nombreDependencia");
    String funcionario = request.getParameter("FuncDepen");
+   Funcionario f;
    if(funcionario.equals("Agregar mas tarde")){
-       throw new Exception("Por favor agregue una dependencia");
+      // throw new Exception("Por favor agregue una dependencia");
+      f=null;
    }
-   Funcionario f= SistemaDeActivos.logic.Model.instance().getFuncionario(funcionario);
-   
-  model.d.setCodigo(Integer.parseInt(id));
+   else{
+   f= SistemaDeActivos.logic.Model.instance().getFuncionario(funcionario);
+   }
+   int cod=Integer.parseInt(id);
+  model.d.setCodigo(cod);
   model.d.setNombre(nombre);
   model.d.setFuncionario(f);
    Dependencia d= new Dependencia();

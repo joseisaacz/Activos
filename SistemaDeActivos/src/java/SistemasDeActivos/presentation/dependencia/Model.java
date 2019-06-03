@@ -14,4 +14,8 @@ import SistemaDeActivos.logic.Dependencia;
 public class Model {
     Dependencia d;
     
+    public Model(){
+        d=new Dependencia();
+    }
+    
 }

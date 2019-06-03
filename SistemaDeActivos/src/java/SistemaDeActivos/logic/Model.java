@@ -144,6 +144,11 @@ public class Model {
         ses.delete(seleccionada);
         t.commit();
     } 
+                public List<Bien> recuperarBienesXSolicitud(Solicitud sol){
+       Query query = ses.createQuery("from Bien b where b.solicitud = :numero");
+        query.setInteger("numero",sol.getNumero());
+        return query.list(); 
+                }
       public void eliminarDependencia(Dependencia seleccionada) throws Exception {
         List<Funcionario> funcionarios=this.recuperarFuncionarios();
         for(Funcionario p: funcionarios){

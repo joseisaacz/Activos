@@ -35,7 +35,7 @@
                 <div class="col">
                     <div class="form-group">
                             <label >Codigo de Dependencia</label>
-                            <input type="text" class="form-control" id="id"  name="codigoDependencia1" required <% if(model!=null){%> value="<%= model.getCodigo() %>" disabled<%}%>>
+                            <input type="text" class="form-control" id="id"  name="codigoDependencia" required <% if(model!=null){%> value="<%= model.getCodigo() %>" disabled<%}%>>
                             
                         </div>    
                 </div>
@@ -59,7 +59,7 @@
                            <%for(Funcionario d : list){ %>
                            <option value="<%= d.getId() %>" <%if(model!=null && d!=null && model.getFuncionario()!=null){if(d.getId().equals(model.getFuncionario().getId())){ %> selected <%}} %>><%= d.getNombre() %></option>
                            <%} %>
- 
+                             <option value="Agregar mas tarde">Agregar mas tarde </option>
                       <% }  else{  %>
                       <option value="Agregar mas tarde">Agregar mas tarde </option>
                       <% } %>
@@ -73,22 +73,42 @@
                  <div style="margin-left: 250px"></div>
                 <div class="col">
                    
-                    
+                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;
+                     <input type="submit" id="submit" class="btn btn-success" value="AGREGAR" > 
                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
                     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
-                    &nbsp; &nbsp; &nbsp; &nbsp; 
+                  
                    <input type="button" id="cancelar" class="btn btn-danger" value="CANCELAR" onclick="javascript:cleanF();">
+                   <% String error= (String) request.getSession().getAttribute("errorDependencia");
+                                if( error!= null) { %>
+            
+              
+        <div class="container">
+        <Medium id="Error" class="text-danger">
+          <%=error %>
+        </Medium>      
+      </div>
+          <%  request.getSession().setAttribute("errorDependencia", null); } %>
                 </div>
          
                  
                 </div>
             <%} else{%>
             
-            <input type="submit" id="submit" class="btn btn-success" value="Actualizar" > 
+             <input type="submit" id="submit" class="btn btn-success" value="ACTUALIZAR" > 
              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  &nbsp;&nbsp;
                   <a href="/SistemaDeActivos/presentation/dependencia/delete?codDepen=<%=model.getCodigo() %>" class="btn btn-danger">ELIMINAR</a>
                       
-                  
+                  <% String error= (String) request.getSession().getAttribute("errorDependencia");
+                                if( error!= null) { %>
+            
+              
+        <div class="container">
+        <Medium id="Error" class="text-danger">
+          <%=error %>
+        </Medium>      
+      </div>
+          <%  request.getSession().setAttribute("errorDependencia", null); } %>
                  
             <%}%>
         </form>
@@ -106,16 +126,9 @@
             <% } %>     
         </div>
              </div>
-             <% String error= (String) request.getSession().getAttribute("errorDependencia");
-                                if( error!= null) { %>
-            
-              
-        <div class="container">
-        <Medium id="Error" class="text-danger">
-          <%=error %>
-        </Medium>      
-      </div>
-          <%  request.getSession().setAttribute("errorDependencia", null); } %>
+             
+          
+          <div style="margin-top: 50px"></div>
          <div >
                          <%@ include file="/presentation/bottomheader.jsp" %>  
                     </div>
