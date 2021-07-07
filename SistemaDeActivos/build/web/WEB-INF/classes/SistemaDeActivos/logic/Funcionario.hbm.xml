@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 26-Mar-2019 22:32:57 by Hibernate Tools 4.3.1 -->
+<!-- Generated 25-May-2019 01:33:07 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="SistemaDeActivos.logic.Funcionario" table="funcionario" catalog="inventario" optimistic-lock="version">
         <id name="id" type="string">
@@ -14,6 +14,12 @@
         <property name="nombre" type="string">
             <column name="nombre" length="30" />
         </property>
+        <set name="activos" table="activo" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="funcionario" length="10" />
+            </key>
+            <one-to-many class="SistemaDeActivos.logic.Activo" />
+        </set>
         <set name="solicituds" table="solicitud" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="registrador" length="10" />

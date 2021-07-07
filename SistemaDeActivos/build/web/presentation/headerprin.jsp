@@ -11,12 +11,10 @@
 <html>
     <head>
          <base href="http://localhost:8080/SistemaDeActivos/">
-         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      <link rel = "stylesheet" type = "text/css" href = "css/css/bootstrap.css" >
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
          
-        <title>Header</title>
+     
     </head>
     <body>
        
@@ -35,35 +33,127 @@
                     <li class="nav-item">
                         <a class ="nav-link" href="/SistemaDeActivos/presentation/menu/Menu.jsp">Home</a> 
                         </li>
-                         <% if(us!=null){ %>  
+                         <% if(us!=null){ %>
+                         
+                         
+                         <%if(us.getRol().equals("Administrador") || us.getRol().equals("Secretaria OCCB") || us.getRol().equals("Jefe OCCB") ||
+                                 us.getRol().equals("Registrador")){ %>
                          <li class="nav-item dropdown">
                              
-                       <a class ="nav-link dropdown-toggle" data-toggle="dropdown" data-target="rol" href="">
-                                       <%=us.getRol() %> 
+                       <a class ="nav-link dropdown-toggle" data-toggle="dropdown" data-target="Solicitud" href="">
+                                     Solicitud
                                        <span class="carot"></span>
                                    </a>  
                         
-                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="rol">
-                                    
+                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Solicitud">
+                             <%if(us.getRol().equals("Administrador")){ %>
                                        <a class="dropdown-item" href="/SistemaDeActivos/presentation/solicitud/create/Solicitud.jsp">Crear Solicitud</a> 
-
+                                                <%}%>
                                        <!-- <a class="dropdown-item" href="/SistemaDeActivos/presentation/solicitud/list/list.jsp">Ver Solicitudes</a> -->
 
                                        <a class="dropdown-item" href="/SistemaDeActivos/presentation/solicitud/list">Ver Solicitudes</a> 
-
-                                     
+                                       
+                            <%if(us.getRol().equals("Registrador")){ %>
+                                         <a class="dropdown-item" href="/SistemaDeActivos/presentation/solicitud/list/listRegistrador.jsp">Ver Solicitudes en espera de Rotulacion</a> 
+                                     <% } %>
                                    </div>
                         
                         
                         </li>
+                        <%} %>
+                         <% if( us.getRol().equals("Jefe RRHH")){ %> 
+                        <li class="nav-item dropdown">
+                            <a class ="nav-link dropdown-toggle" data-toggle="dropdown" data-target="Dependencia" href="">
+                                     Dependencia
+                                       <span class="carot"></span>
+                                   </a>  
+                        
+                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Dependencia">
+                                    
+                                       <a class="dropdown-item" href="/SistemaDeActivos/presentation/dependencia/create/Dependencia.jsp">Crear Dependencia</a> 
+
+                                       <!-- <a class="dropdown-item" href="/SistemaDeActivos/presentation/solicitud/list/list.jsp">Ver Solicitudes</a> -->
+
+                                       <a class="dropdown-item" href="/SistemaDeActivos/presentation/dependencia/list/listDependencias.jsp">Ver Dependencias</a> 
+                                       
+                            
+
+                                     
+                                   </div>
+                        </li>
+                        <% } %>
+                        <% if(us.getRol().equals("Jefe OCCB")|| us.getRol().equals("Jefe RRHH")){ %>
+                        
+                        
+                          <li class="nav-item dropdown">
+                            <a class ="nav-link dropdown-toggle" data-toggle="dropdown" data-target="Activos" href="">
+                                     Activos
+                                       <span class="carot"></span>
+                                   </a>  
+                        
+                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Activos">
+                                    
+                                       <a class="dropdown-item" href="/SistemaDeActivos/presentation/activo/list/listActivos.jsp">Ver Activos</a> 
+
+
+                                   </div>
+                        </li>
+                        
+                        
+                        
+                        <%}%>
+                        <%if(us.getRol().equals("Registrador")){ %>
+                          <li class="nav-item dropdown">
+                            <a class ="nav-link dropdown-toggle" data-toggle="dropdown" data-target="Categoria" href="">
+                                     Categoria
+                                       <span class="carot"></span>
+                                   </a>  
+                        
+                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Categoria">
+                                    
+                                       <a class="dropdown-item" href="/SistemaDeActivos/presentation/categoria/create/Categoria.jsp">Crear Categoria</a> 
+
+                                       <!-- <a class="dropdown-item" href="/SistemaDeActivos/presentation/solicitud/list/list.jsp">Ver Solicitudes</a> -->
+
+                                       <a class="dropdown-item" href="/SistemaDeActivos/presentation/categoria/list/listCategorias.jsp">Ver Categorias</a> 
+                                       
+                            
+
+                                     
+                                   </div>
+                        </li>
+                   <% }if(us.getRol().equals("Jefe RRHH")){ %>
+                         <li class="nav-item dropdown">
+                            <a class ="nav-link dropdown-toggle" data-toggle="dropdown" data-target="Funcionario" href="">
+                                     Funcionario
+                                       <span class="carot"></span>
+                                   </a>  
+                        
+                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Funcionario">
+                                    
+                                       <a class="dropdown-item" href="/SistemaDeActivos/presentation/funcionario/create/Funcionario.jsp">Crear Funcionario</a> 
+
+                                       <!-- <a class="dropdown-item" href="/SistemaDeActivos/presentation/solicitud/list/list.jsp">Ver Solicitudes</a> -->
+
+                                       <a class="dropdown-item" href="/SistemaDeActivos/presentation/funcionario/list/listFuncionarios.jsp">Ver Funcionarios</a> 
+                                       
+                            
+
+                                     
+                                   </div>
+                        </li>
+                             <%}%>
+                       
                         <%}%>
                         
                       
                            <li class="nav-item dropdown">
-                          <%if(us!=null && us.getFuncionario()!= null) { %>
+                          <%if(us!=null && us.getFuncionario()!= null) { 
+                        
+                          %>
                            
                                    <a class ="nav-link dropdown-toggle" data-toggle="dropdown" data-target="logout" href="">
-                                       <%=us.getFuncionario().getNombre() %> 
+                                       <%=us.getRol() %> 
                                        <span class="carot"></span>
                                    </a>  
                                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="logout">
@@ -82,8 +172,7 @@
             </nav>
                         
         </div>
-   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+   <script type="text/javascript" src="css/js/jquery.js"></script>
+  <script type="text/javascript" src="css/js/bootstrap.js"></script>
     </body>
 </html>

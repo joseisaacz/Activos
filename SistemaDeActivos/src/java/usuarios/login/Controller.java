@@ -24,6 +24,13 @@ import java.util.List;
  *
  * @author Escinf
  */
+/*
+
+--------------------------------------------------------------------------------------------
+
+LEER README EN SISTEMADEACTIVOS/README
+
+*/
 @WebServlet(name = "presentation.usuarios.login", urlPatterns = {"/presentation/usuarios/login/prepareLogin","/presentation/usuarios/login/login","/presentation/usuarios/login/logout"})
 public class Controller extends HttpServlet {
 
@@ -65,12 +72,13 @@ public class Controller extends HttpServlet {
                 request.setAttribute("model", model);
                 Usuario logged=null;
                 try {
-               
-                    logged=Model.instance().getUsuario(model.getId(), model.getClave());
+                   // request.login(model.getId(), model.getClave());
+                    logged=Model.instance().getUsuario(model.getId(),model.getClave());
+                  
                     request.getSession(true).setAttribute("logged", logged);
                     errorBase=false;
                      request.setAttribute("errorBase", errorBase);
-                 request.getRequestDispatcher("/presentation/solicitud/create/Solicitud.jsp").forward(request, response);
+                 request.getRequestDispatcher("/presentation/menu/Menu.jsp").forward(request, response);
                 } catch (Exception ex) {
                     errorBase=true;
                     request.setAttribute("errorBase", errorBase);
@@ -91,9 +99,11 @@ public class Controller extends HttpServlet {
 
     protected void logout(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            HttpSession session = request.getSession(true);
-            session.removeAttribute("logged");
-            session.invalidate();
+            request.getSession().removeAttribute("logged");
+            request.getSession().invalidate();
+           if(SistemaDeActivos.presentation.solicitud.Controller.model != null){
+               SistemaDeActivos.presentation.solicitud.Controller.model.clear();
+           }
             request.getRequestDispatcher("/presentation/usuarios/login/prepareLogin").forward( request, response); 
     }           
 

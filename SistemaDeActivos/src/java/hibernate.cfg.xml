@@ -45,13 +45,14 @@ Contributor(s):
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/inventario?autoReconnect=true&amp;useSSL=false</property>
     <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">papalotedepapel123</property>
+    <property name="hibernate.connection.password">root</property>
+    <mapping resource="SistemaDeActivos/logic/Categoria.hbm.xml"/>
+    <mapping resource="SistemaDeActivos/logic/Grupo.hbm.xml"/>
     <mapping resource="SistemaDeActivos/logic/Dependencia.hbm.xml"/>
+    <mapping resource="SistemaDeActivos/logic/Bien.hbm.xml"/>
     <mapping resource="SistemaDeActivos/logic/Funcionario.hbm.xml"/>
-    <mapping resource="SistemaDeActivos/logic/Usuario.hbm.xml"/>
     <mapping resource="SistemaDeActivos/logic/Activo.hbm.xml"/>
     <mapping resource="SistemaDeActivos/logic/Solicitud.hbm.xml"/>
-    <mapping resource="SistemaDeActivos/logic/Categoria.hbm.xml"/>
-    <mapping resource="SistemaDeActivos/logic/Bien.hbm.xml"/>
+    <mapping resource="SistemaDeActivos/logic/Usuario.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

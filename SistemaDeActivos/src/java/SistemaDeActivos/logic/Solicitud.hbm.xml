@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 26-Mar-2019 22:32:57 by Hibernate Tools 4.3.1 -->
+<!-- Generated 25-May-2019 01:33:07 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="SistemaDeActivos.logic.Solicitud" table="solicitud" catalog="inventario" optimistic-lock="version">
         <id name="numero" type="java.lang.Integer">
@@ -24,7 +24,7 @@
             <column name="tipo" length="20" />
         </property>
         <property name="estado" type="string">
-            <column name="estado" length="20" />
+            <column name="estado" length="30" />
         </property>
         <set name="biens" table="bien" inverse="true" lazy="true" fetch="select">
             <key>

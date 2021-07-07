@@ -7,13 +7,10 @@
 <head>
             <base href="http://localhost:8080/SistemaDeActivos/" > 
             
-         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 
-         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
- <link rel="stylesheet" href="css/estilo.css">
     <title>Login</title>
     <%@ include file="/presentation/headerprin.jsp" %>
+         <link rel = "stylesheet" type = "text/css" href = "css/css/bootstrap.css" >
 </head>
 
 <body>
@@ -26,6 +23,9 @@
  <div style="margin-top: 100px" >
      
         </div>
+
+
+<div class="col-4 mx-auto">
 <div class="jumbotron boxlogin">
   <h2 style="text-align: center; position:relative; top:-25px;"  ><span class="badge badge-dark">Login</span></h2>
     
@@ -76,7 +76,13 @@
     
     
 </div>
-
+</div>
+               <div >
+                         <%@ include file="/presentation/bottomheader.jsp" %>  
+                    </div>
+                   <script type="text/javascript" src="css/js/jquery.js"></script>
+  <script type="text/javascript" src="css/js/bootstrap.js"></script>
+ <script  src="js/ajax.js"></script>
 </body>
 </html>
 <%!

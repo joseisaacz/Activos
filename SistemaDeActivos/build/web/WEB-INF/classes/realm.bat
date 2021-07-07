@@ -1,0 +1,2 @@
+asadmin create-auth-realm --classname com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm --property jaas-context=jdbcRealm:datasource-jndi="jdbc/inventario":user-table=Usuario:user-name-column=id:password-column=clave:group-table=Grupo:group-name-column=grupo:digest-algorithm=SHA-256 ActivosJdbcReal
+ 
